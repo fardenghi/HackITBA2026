@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +7,6 @@ import { submitInvoiceAction } from '@/lib/invoices/actions';
 import { invoiceOriginationSchema, type InvoiceOriginationFormInput } from '@/lib/invoices/schemas';
 
 export function InvoiceOriginationForm() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
   const form = useForm<InvoiceOriginationFormInput>({
@@ -39,8 +37,7 @@ export function InvoiceOriginationForm() {
         return;
       }
 
-      router.push(result.redirectTo ?? '/cedente/invoices/new');
-      router.refresh();
+      window.location.assign(result.redirectTo ?? '/cedente/invoices/new');
     });
   });
 

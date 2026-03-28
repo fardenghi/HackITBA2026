@@ -8,6 +8,8 @@ const RiskNarrativeSchema = z.object({
   evidence: z.array(z.string().trim().min(1)).max(5),
 });
 
+const LLM_TIMEOUT_MS = 4_000;
+
 export type RiskNarrativeResult = z.infer<typeof RiskNarrativeSchema> & {
   fallbackUsed: boolean;
 };
@@ -36,11 +38,15 @@ export async function buildRiskNarrative(
   input: BuildRiskNarrativeInput,
   options: BuildRiskNarrativeOptions = {},
 ): Promise<RiskNarrativeResult> {
+  if (!options.generateObjectImpl && !process.env.OPENAI_API_KEY) {
+    return buildFallbackNarrative(input);
+  }
+
   const generateObjectImpl = options.generateObjectImpl ?? generateObject;
   const model = options.model ?? openai('gpt-4.1-mini');
 
   try {
-    const { object } = await generateObjectImpl({
+    const generation = generateObjectImpl({
       model,
       schema: RiskNarrativeSchema,
       prompt: `Generá una explicación breve del riesgo crediticio.
@@ -52,6 +58,12 @@ ${input.evidence.map((item) => `- ${item}`).join('\n')}
 
 No inventes hechos. Usá solo la evidencia provista.`,
     });
+    const { object } = await Promise.race([
+      generation,
+      new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error('LLM narrative timeout')), LLM_TIMEOUT_MS);
+      }),
+    ]);
 
     const filteredEvidence = object.evidence.filter((item) => input.evidence.includes(item)).slice(0, 5);
 
