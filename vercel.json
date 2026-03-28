@@ -1,5 +1,4 @@
 {
   "buildCommand": "next build",
-  "outputDirectory": ".next",
-  "ssoProtection": null
+  "outputDirectory": ".next"
 }
