@@ -3,6 +3,8 @@ import type { MarketplaceInvoiceCard } from '@/lib/marketplace/types';
 import { purchaseFractions } from '@/lib/marketplace/actions';
 import { createMarketplaceRealtimeController } from '@/hooks/use-marketplace-realtime';
 
+const validInvoiceId = '11111111-1111-4111-8111-111111111111';
+
 const baseInvoice: MarketplaceInvoiceCard = {
   id: 'invoice-1',
   invoiceNumber: 'FAC-1',
@@ -36,7 +38,7 @@ describe('marketplace purchase action', () => {
 
     await expect(
       purchaseFractions(
-        { invoiceId: 'invoice-1', fractionCount: 0 },
+        { invoiceId: validInvoiceId, fractionCount: 0 },
         {
           getActor: async () => ({ userId: 'investor-1', role: 'inversor' }),
           callFundInvoice,
@@ -51,7 +53,7 @@ describe('marketplace purchase action', () => {
 
     await expect(
       purchaseFractions(
-        { invoiceId: 'invoice-1', fractionCount: 1 },
+        { invoiceId: validInvoiceId, fractionCount: 1 },
         {
           getActor: async () => ({ userId: 'cedente-1', role: 'cedente' }),
           callFundInvoice,
