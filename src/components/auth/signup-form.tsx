@@ -11,7 +11,7 @@ import { FormShell } from '@/components/auth/form-shell';
 import { authRoles } from '@/lib/auth/types';
 
 const roleLabels = {
-  cedente: 'Cedente · PyME que sube facturas',
+  cedente: 'Cedente · PyME que sube cheques',
   inversor: 'Inversor · Compra fracciones con retorno fijo',
 } as const;
 

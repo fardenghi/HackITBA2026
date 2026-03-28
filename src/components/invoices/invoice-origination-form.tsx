@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { submitInvoiceAction } from '@/lib/invoices/actions';
 import { invoiceOriginationSchema, type InvoiceOriginationFormInput } from '@/lib/invoices/schemas';
+import { MAX_TOKEN_PRICE_PESOS } from '@/lib/tokenization/fractions';
 
 export function InvoiceOriginationForm() {
   const [isPending, startTransition] = useTransition();
@@ -14,12 +15,11 @@ export function InvoiceOriginationForm() {
     defaultValues: {
       pagadorCuit: '30712345678',
       pagadorName: 'Techint SA',
-      invoiceNumber: 'FAC-2026-001',
+      invoiceNumber: 'CHQ-2026-001',
       faceValue: 1500000,
       issueDate: '2026-03-28',
       dueDate: '2026-06-28',
-      description: 'Factura por servicios industriales y mantenimiento de planta.',
-      fractionCount: 8,
+      description: 'Cheque de pago diferido por servicios industriales y mantenimiento de planta.',
     },
   });
 
@@ -30,7 +30,7 @@ export function InvoiceOriginationForm() {
       const result = await submitInvoiceAction(values);
 
       if (result.status === 'error') {
-        setFormError(result.message ?? 'No pudimos originar la factura.');
+        setFormError(result.message ?? 'No pudimos originar el cheque.');
         Object.entries(result.fieldErrors ?? {}).forEach(([key, message]) => {
           form.setError(key as keyof InvoiceOriginationFormInput, { message });
         });
@@ -47,11 +47,10 @@ export function InvoiceOriginationForm() {
         {[
           { name: 'pagadorCuit', label: 'CUIT del pagador', type: 'text' },
           { name: 'pagadorName', label: 'Razón social pagador', type: 'text' },
-          { name: 'invoiceNumber', label: 'Número de factura', type: 'text' },
+          { name: 'invoiceNumber', label: 'Número de cheque', type: 'text' },
           { name: 'faceValue', label: 'Monto nominal (ARS)', type: 'number' },
           { name: 'issueDate', label: 'Fecha de emisión', type: 'date' },
           { name: 'dueDate', label: 'Fecha de vencimiento', type: 'date' },
-          { name: 'fractionCount', label: 'Cantidad de fracciones', type: 'number' },
         ].map((field) => (
           <div key={field.name}>
             <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor={field.name}>
@@ -89,6 +88,10 @@ export function InvoiceOriginationForm() {
         ) : null}
       </div>
 
+      <div className="rounded-[1.75rem] border border-emerald-300/20 bg-emerald-400/10 p-5 text-sm text-emerald-50">
+        Karaí define la tokenización automáticamente cuando termina el scoring: divide el cheque en la mayor cantidad posible para que ningún token supere los ARS {MAX_TOKEN_PRICE_PESOS.toLocaleString('es-AR')}.
+      </div>
+
       {formError ? <p className="rounded-2xl bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{formError}</p> : null}
 
       <button
@@ -96,7 +99,7 @@ export function InvoiceOriginationForm() {
         disabled={isPending}
         type="submit"
       >
-        {isPending ? 'Validando factura…' : 'Originar factura'}
+        {isPending ? 'Analizando cheque…' : 'Originar cheque'}
       </button>
     </form>
   );

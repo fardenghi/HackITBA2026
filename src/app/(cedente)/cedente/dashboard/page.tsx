@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { logoutAction } from '@/lib/auth/actions';
 import { getCurrentAuthState } from '@/lib/auth/session';
 import { MetricCard } from '@/components/dashboard/metric-card';
@@ -19,8 +20,8 @@ export default async function CedenteDashboardPage() {
         title="Control de colocación y settlement"
       >
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-slate-950/50 p-5 text-slate-300">Facturas activas por estado: {Object.keys(dashboard.statusCounts).length || 0} buckets visibles.</div>
-          <div className="rounded-2xl border border-white/10 bg-slate-950/50 p-5 text-slate-300">Capital levantado y spread calculados server-side desde invoices + ledger.</div>
+          <Link className="rounded-2xl border border-white/10 bg-slate-950/50 p-5 text-slate-300 transition hover:border-emerald-300/30 hover:bg-slate-900/60" href="/cedente/invoices/new">Emitir un cheque nuevo y recalcular riesgo en minutos.</Link>
+          <div className="rounded-2xl border border-white/10 bg-slate-950/50 p-5 text-slate-300">Cheques activos por estado: {Object.keys(dashboard.statusCounts).length || 0} buckets visibles.</div>
           <form action={logoutAction}>
             <button className="w-full rounded-2xl bg-white px-5 py-5 font-semibold text-slate-950" type="submit">
               Cerrar sesión
@@ -30,14 +31,14 @@ export default async function CedenteDashboardPage() {
       </DashboardHero>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetricCard hint={`${dashboard.statusCounts.funding ?? 0} en funding · ${dashboard.statusCounts.funded ?? 0} funded`} label="Facturas activas" value={`${dashboard.invoices.length}`} />
+        <MetricCard hint={`${dashboard.statusCounts.funding ?? 0} en funding · ${dashboard.statusCounts.funded ?? 0} funded`} label="Cheques activos" value={`${dashboard.invoices.length}`} />
         <MetricCard hint="Suma de net_amount para funded, settling y settled" label="Capital levantado" value={formatCurrency(dashboard.totalCapitalRaised)} />
-        <MetricCard hint="Spread total sobre monto nominal de facturas fondeadas o liquidadas" label="Costo efectivo" value={`${(dashboard.effectiveFinancingCost * 100).toFixed(2)}%`} />
+        <MetricCard hint="Spread total sobre monto nominal de cheques fondeados o liquidados" label="Costo efectivo" value={`${(dashboard.effectiveFinancingCost * 100).toFixed(2)}%`} />
         <MetricCard hint="Spread acumulado" label="Spread total" value={formatCurrency(dashboard.spreadTotal)} />
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-slate-950/50 p-6">
-        <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Facturas del cedente</p>
+        <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Cheques del cedente</p>
         <h2 className="mt-2 text-2xl font-semibold text-white">Pipeline visible de originación a settlement</h2>
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {dashboard.invoices.map((invoice) => (
@@ -52,6 +53,11 @@ export default async function CedenteDashboardPage() {
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <MetricCard label="Monto" value={formatCurrency(invoice.amount)} />
                 <MetricCard label="Monto neto" value={formatCurrency(invoice.netAmount)} />
+              </div>
+              <div className="mt-4 flex justify-end">
+                <Link className="text-sm font-semibold text-emerald-200" href={`/cedente/invoices/${invoice.id}`}>
+                  Ver cheque completo →
+                </Link>
               </div>
             </article>
           ))}

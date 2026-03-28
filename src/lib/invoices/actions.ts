@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { buildRiskNarrative } from '@/lib/risk/llm';
 import { getBcraSnapshot } from '@/lib/risk/bcra';
 import { scoreRiskDeterministically } from '@/lib/risk/deterministic';
-import { splitInvoiceIntoFractions } from '@/lib/tokenization/fractions';
+import { calculateAutomaticFractionCount, splitInvoiceIntoFractions } from '@/lib/tokenization/fractions';
 import { buildInvoiceTokenHash } from '@/lib/tokenization/hash';
 import {
   invoiceOriginationSchema,
@@ -81,7 +81,7 @@ async function buildServerServices(): Promise<InvoiceActionServices> {
     },
     async createInvoice(payload) {
       const { data, error } = await supabase.from('invoices').insert(payload).select('id, status').single<InvoiceRecord>();
-      if (error || !data) throw new Error(error?.message ?? 'No pudimos crear la factura.');
+      if (error || !data) throw new Error(error?.message ?? 'No pudimos crear el cheque.');
       return data;
     },
     async transitionInvoice(invoiceId, status, actorId) {
@@ -119,7 +119,7 @@ async function buildServerServices(): Promise<InvoiceActionServices> {
       });
 
       if (error || !data) {
-        throw new Error(error?.message ?? 'No pudimos tokenizar la factura.');
+        throw new Error(error?.message ?? 'No pudimos tokenizar el cheque.');
       }
 
       const row = Array.isArray(data) ? data[0] : data;
@@ -147,7 +147,6 @@ export async function finalizeInvoiceTokenization(
     dueDate: string;
     pagadorCuit: string;
     description: string;
-    fractionCount: number;
     riskTier: string;
     discountRate: number;
   },
@@ -157,7 +156,8 @@ export async function finalizeInvoiceTokenization(
   },
 ) {
   const netAmount = roundCurrency(invoice.amount * (1 - invoice.discountRate));
-  const fractionAmounts = splitInvoiceIntoFractions(netAmount, invoice.fractionCount);
+  const fractionCount = calculateAutomaticFractionCount(netAmount);
+  const fractionAmounts = splitInvoiceIntoFractions(netAmount, fractionCount);
   const tokenHash = buildInvoiceTokenHash({
     invoiceId: invoice.id,
     pagadorCuit: invoice.pagadorCuit,
@@ -167,13 +167,13 @@ export async function finalizeInvoiceTokenization(
     description: invoice.description,
     riskTier: invoice.riskTier,
     discountRate: invoice.discountRate,
-    fractionCount: invoice.fractionCount,
+    fractionCount,
   });
 
   return services.tokenizeInvoice({
     invoiceId: invoice.id,
     actorId: services.actorId,
-    totalFractions: invoice.fractionCount,
+    totalFractions: fractionCount,
     tokenHash,
     netAmount,
     fractionAmounts,
@@ -189,7 +189,7 @@ export async function submitInvoiceForOrigination(
   if (!parsed.success) {
     return {
       status: 'error',
-      message: 'Revisá los datos de la factura e intentá de nuevo.',
+      message: 'Revisá los datos del cheque e intentá de nuevo.',
       fieldErrors: toFieldErrors(parsed.error),
     };
   }
@@ -199,7 +199,7 @@ export async function submitInvoiceForOrigination(
   if (!actor || actor.role !== 'cedente') {
     return {
       status: 'error',
-      message: 'Solo un cedente autenticado puede originar facturas.',
+      message: 'Solo un cedente autenticado puede originar cheques.',
     };
   }
 
@@ -245,13 +245,12 @@ export async function submitInvoiceForOrigination(
       id: invoice.id,
       amount: parsed.data.faceValue,
       issueDate: parsed.data.issueDate,
-      dueDate: parsed.data.dueDate,
-      pagadorCuit: parsed.data.pagadorCuit,
-      description: parsed.data.description,
-      fractionCount: parsed.data.fractionCount,
-      riskTier: deterministic.tier,
-      discountRate: deterministic.discountRate,
-    },
+        dueDate: parsed.data.dueDate,
+        pagadorCuit: parsed.data.pagadorCuit,
+        description: parsed.data.description,
+        riskTier: deterministic.tier,
+        discountRate: deterministic.discountRate,
+      },
     {
       actorId: actor.userId,
       tokenizeInvoice: services.tokenizeInvoice,

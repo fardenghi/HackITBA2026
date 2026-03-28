@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 const purchaseFractionsSchema = z.object({
-  invoiceId: z.string().uuid('Seleccioná una factura válida.'),
+  invoiceId: z.string().uuid('Seleccioná un cheque válido.'),
   fractionCount: z.coerce.number().int('Ingresá una cantidad entera.').positive('Comprá al menos una fracción.'),
 });
 
@@ -121,10 +121,10 @@ export async function purchaseFractions(
     const purchase = await services.callFundInvoice(parsed.data);
 
     return {
-      status: 'success',
-      message:
-        purchase.invoiceStatus === 'funded'
-          ? 'Compraste las últimas fracciones y la factura quedó totalmente fondeada.'
+        status: 'success',
+        message:
+          purchase.invoiceStatus === 'funded'
+          ? 'Compraste las últimas fracciones y el cheque quedó totalmente fondeado.'
           : 'Compra registrada con éxito.',
       purchase: {
         invoiceId: parsed.data.invoiceId,

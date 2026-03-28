@@ -27,7 +27,7 @@ export function EventTimeline({ items }: EventTimelineProps) {
   if (items.length === 0) {
     return (
       <section className="rounded-3xl border border-dashed border-white/15 bg-slate-950/30 p-6 text-slate-300">
-        Todavía no hay hitos auditables para esta factura.
+        Todavía no hay hitos auditables para este cheque.
       </section>
     );
   }

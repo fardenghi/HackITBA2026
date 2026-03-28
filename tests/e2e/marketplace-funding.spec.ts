@@ -79,7 +79,7 @@ test('investor can browse marketplace, inspect returns, and buy fractions', asyn
       pagador_cuit: '30712345678',
       pagador_name: 'Pagador Demo SA',
       invoice_number: invoiceNumber,
-      description: 'Factura seeded para la validación E2E de marketplace funding.',
+      description: 'Cheque seeded para la validación E2E de marketplace funding.',
       amount: '4000.00',
       net_amount: '3200.00',
       issue_date: '2026-03-28',
@@ -119,7 +119,7 @@ test('investor can browse marketplace, inspect returns, and buy fractions', asyn
   await expect(page).toHaveURL(/\/inversor\/dashboard$/);
 
   const invoiceCard = page.locator('article').filter({ hasText: invoiceNumber });
-  await expect(page.getByRole('heading', { name: 'Marketplace de facturas en funding' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Marketplace de cheques + portafolio vivo' })).toBeVisible();
   await expect(invoiceCard.getByText(invoiceNumber)).toBeVisible();
   await expect(invoiceCard.getByText('Tier A', { exact: true })).toBeVisible();
   await expect(invoiceCard.getByText('1 / 4 fracciones fondeadas')).toBeVisible();

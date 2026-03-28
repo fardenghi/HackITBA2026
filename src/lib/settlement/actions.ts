@@ -6,7 +6,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { SettlementActionFieldErrors, SettlementActionInput, SettlementActionResult } from '@/lib/settlement/types';
 
 const settlementSchema = z.object({
-  invoiceId: z.string().uuid('Seleccioná una factura válida.'),
+  invoiceId: z.string().uuid('Seleccioná un cheque válido.'),
 });
 
 type SettlementActor = {
@@ -55,7 +55,7 @@ async function buildServerServices(): Promise<SettlementServices> {
       });
 
       if (error || !data) {
-        throw new Error(error?.message ?? 'No pudimos liquidar la factura.');
+        throw new Error(error?.message ?? 'No pudimos liquidar el cheque.');
       }
 
       const row = Array.isArray(data) ? data[0] : data;
@@ -91,7 +91,7 @@ export async function settleInvoice(
   if (!actor || actor.role !== 'cedente') {
     return {
       status: 'error',
-      message: 'Solo un cedente autenticado puede liquidar facturas.',
+      message: 'Solo un cedente autenticado puede liquidar cheques.',
     };
   }
 
@@ -106,7 +106,7 @@ export async function settleInvoice(
   } catch (error) {
     return {
       status: 'error',
-      message: error instanceof Error ? error.message : 'No pudimos liquidar la factura.',
+      message: error instanceof Error ? error.message : 'No pudimos liquidar el cheque.',
     };
   }
 }

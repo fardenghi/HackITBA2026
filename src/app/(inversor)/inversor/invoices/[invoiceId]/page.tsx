@@ -19,7 +19,7 @@ export default async function InvestorInvoiceDetailPage({ params }: { params: Pr
 
   const currentStatus =
     settlementView?.invoice.status ?? (snapshot ? (snapshot.availableFractions === 0 ? 'funded' : 'funding') : 'funding');
-  const title = settlementView?.invoice.invoiceNumber ?? snapshot?.invoiceNumber ?? 'Factura';
+  const title = settlementView?.invoice.invoiceNumber ?? snapshot?.invoiceNumber ?? 'Cheque';
   const payerName = settlementView?.invoice.pagadorName ?? snapshot?.pagadorName ?? '';
   const amount = settlementView?.invoice.amount ?? snapshot?.amount ?? 0;
   const netAmount = settlementView?.invoice.netAmount ?? snapshot?.netAmount ?? 0;
@@ -82,10 +82,11 @@ export default async function InvestorInvoiceDetailPage({ params }: { params: Pr
             <Metric label="Fracciones propias" value={`${settlementView.holding.ownedFractions}`} />
             <Metric label="Capital invertido" value={formatCurrency(settlementView.holding.investedPrincipal)} />
             <Metric label="Retorno esperado" value={formatCurrency(settlementView.holding.expectedReturn)} />
+            <Metric label="Retorno actual" value={formatCurrency(settlementView.holding.realizedReturn)} />
           </section>
 
           <SettlementSummary
-            description="Tu vista de portafolio conserva capital invertido, retorno esperado y retorno realizado cuando la factura avanza a settlement."
+            description="Tu vista de portafolio conserva capital invertido, retorno esperado y retorno realizado cuando el cheque avanza a settlement."
             heading="Resumen del holding"
             interestTotal={settlementView.holding.realizedReturn}
             principalTotal={settlementView.holding.investedPrincipal}

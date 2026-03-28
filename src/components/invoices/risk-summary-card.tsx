@@ -33,7 +33,7 @@ export function RiskSummaryCard({
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Resultado de riesgo</p>
-          <h2 className="mt-3 text-2xl font-semibold text-white">Scoring validado para marketplace</h2>
+          <h2 className="mt-3 text-2xl font-semibold text-white">Scoring validado para marketplace con narrativa IA</h2>
         </div>
         <RiskBadge tier={tier} />
       </div>
@@ -42,7 +42,7 @@ export function RiskSummaryCard({
         <FactCard label="Situación BCRA" value={String(currentSituation || '0')} />
         <FactCard label="Atraso" value={`${daysOverdue} días`} />
         <FactCard label="Cheques rechazados" value={`${rejectedChecksCount} casos`} />
-        <FactCard label="Origen narrativa" value={narrativeSource === 'llm' ? 'LLM' : 'Fallback deterministico'} />
+        <FactCard label="Origen narrativa" value={narrativeSource === 'llm' ? 'OpenAI' : 'Fallback determinístico'} />
       </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">

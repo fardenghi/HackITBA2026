@@ -7,23 +7,21 @@ describe('invoice origination schema', () => {
     const parsed = invoiceOriginationSchema.parse({
       pagadorCuit: '30-71234567-8',
       pagadorName: 'Techint SA',
-      invoiceNumber: 'FAC-0001',
+      invoiceNumber: 'CHQ-0001',
       faceValue: 1500000,
       issueDate: '2026-03-28',
       dueDate: '2026-06-28',
-      description: '  Factura por servicios industriales  ',
-      fractionCount: 8,
+      description: '  Cheque por servicios industriales  ',
     });
 
     expect(serializeInvoiceOriginationInput(parsed)).toEqual({
       pagador_cuit: '30712345678',
       pagador_name: 'Techint SA',
-      invoice_number: 'FAC-0001',
+      invoice_number: 'CHQ-0001',
       amount: '1500000.00',
       issue_date: '2026-03-28',
       due_date: '2026-06-28',
-      description: 'Factura por servicios industriales',
-      total_fractions: 8,
+      description: 'Cheque por servicios industriales',
     });
   });
 
@@ -31,12 +29,11 @@ describe('invoice origination schema', () => {
     const parsed = invoiceOriginationSchema.safeParse({
       pagadorCuit: '30712345678',
       pagadorName: 'Techint SA',
-      invoiceNumber: 'FAC-0002',
+      invoiceNumber: 'CHQ-0002',
       faceValue: 500000,
       issueDate: '2026-03-28',
       dueDate: '2026-04-28',
       description: '   ',
-      fractionCount: 5,
     });
 
     expect(parsed.success).toBe(false);
@@ -47,12 +44,11 @@ describe('invoice origination schema', () => {
     const parsed = invoiceOriginationSchema.safeParse({
       pagadorCuit: '20-0000000-0',
       pagadorName: 'Pagador inválido',
-      invoiceNumber: 'FAC-0003',
+      invoiceNumber: 'CHQ-0003',
       faceValue: 250000,
       issueDate: '2026-03-28',
       dueDate: '2026-04-28',
-      description: 'Factura con CUIT inválido',
-      fractionCount: 4,
+      description: 'Cheque con CUIT inválido',
     });
 
     expect(parsed.success).toBe(false);
@@ -68,12 +64,11 @@ describe('invoice origination schema', () => {
       {
         pagadorCuit: '30712345678',
         pagadorName: 'Techint SA',
-        invoiceNumber: 'FAC-100',
+        invoiceNumber: 'CHQ-100',
         faceValue: 1500000,
         issueDate: '2026-03-28',
         dueDate: '2026-06-28',
-        description: 'Factura por servicios industriales.',
-        fractionCount: 8,
+        description: 'Cheque por servicios industriales.',
       },
       {
         getActor: vi.fn().mockResolvedValue({ userId: 'cedente-1', role: 'cedente' }),
@@ -138,12 +133,11 @@ describe('invoice origination schema', () => {
       {
         pagadorCuit: '30798765432',
         pagadorName: 'YPF SA',
-        invoiceNumber: 'FAC-101',
+        invoiceNumber: 'CHQ-101',
         faceValue: 900000,
         issueDate: '2026-03-28',
         dueDate: '2026-05-12',
-        description: 'Factura con fallback de BCRA.',
-        fractionCount: 6,
+        description: 'Cheque con fallback de BCRA.',
       },
       {
         getActor: vi.fn().mockResolvedValue({ userId: 'cedente-1', role: 'cedente' }),
@@ -197,12 +191,11 @@ describe('invoice origination schema', () => {
       {
         pagadorCuit: '30712345678',
         pagadorName: 'Techint SA',
-        invoiceNumber: 'FAC-102',
+        invoiceNumber: 'CHQ-102',
         faceValue: 1500000,
         issueDate: '2026-03-28',
         dueDate: '2026-06-28',
-        description: 'Factura protegida por RBAC.',
-        fractionCount: 8,
+        description: 'Cheque protegido por RBAC.',
       },
       {
         getActor: vi.fn().mockResolvedValue({ userId: 'investor-1', role: 'inversor' }),

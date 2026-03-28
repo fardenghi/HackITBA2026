@@ -12,8 +12,10 @@ type MarketplaceCardProps = {
 };
 
 export function MarketplaceCard({ invoice, mode }: MarketplaceCardProps) {
+  const expectedYield = invoice.perFractionNetAmount > 0 ? (invoice.perFractionExpectedReturn / invoice.perFractionNetAmount) * 100 : 0;
+
   return (
-    <article className="rounded-[2rem] border border-white/10 bg-slate-950/40 p-6">
+    <article className="rounded-[2rem] border border-white/10 bg-slate-950/40 p-6 shadow-2xl shadow-black/20">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Cheque en funding</p>
@@ -28,6 +30,10 @@ export function MarketplaceCard({ invoice, mode }: MarketplaceCardProps) {
 
       <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
         <p className="text-sm uppercase tracking-[0.25em] text-slate-500">Ficha del cheque</p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <Highlight label="Tasa anual" value={`${(invoice.discountRate * 100).toFixed(2)}%`} />
+          <Highlight label="Yield por token" value={`${expectedYield.toFixed(2)}%`} />
+        </div>
         <div className="mt-4">
           <InvoiceFactsList
             availableFractions={invoice.availableFractions}
@@ -46,7 +52,7 @@ export function MarketplaceCard({ invoice, mode }: MarketplaceCardProps) {
       </div>
 
       <div className="mt-6 flex items-center justify-between gap-4 text-sm text-slate-300">
-        <span>{invoice.availableFractions} fracciones disponibles antes del CTA</span>
+        <span>{invoice.availableFractions} tokens disponibles antes del CTA</span>
         <Link
           className="rounded-full bg-white px-4 py-2 font-semibold text-slate-950 transition hover:bg-slate-200"
           href={`/inversor/invoices/${invoice.id}`}
@@ -55,5 +61,14 @@ export function MarketplaceCard({ invoice, mode }: MarketplaceCardProps) {
         </Link>
       </div>
     </article>
+  );
+}
+
+function Highlight({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</p>
+      <p className="mt-2 text-xl font-semibold text-white">{value}</p>
+    </div>
   );
 }

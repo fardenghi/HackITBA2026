@@ -47,7 +47,7 @@ async function runSignupFlow(
   await page.getByLabel('Nombre visible').fill(displayName);
   await page.getByLabel('Empresa (opcional)').fill(companyName);
   await page.getByLabel('Contraseña').fill(password);
-  await page.getByText(role === 'cedente' ? 'Cedente · PyME que sube facturas' : 'Inversor · Compra fracciones con retorno fijo').click();
+  await page.getByText(role === 'cedente' ? 'Cedente · PyME que sube cheques' : 'Inversor · Compra fracciones con retorno fijo').click();
   await page.getByRole('button', { name: 'Crear cuenta' }).click();
 
   await expect(page).toHaveURL(new RegExp(`${dashboardPath}$`), { timeout: 15_000 });
@@ -75,6 +75,6 @@ test.describe('auth signup flow', () => {
   });
 
   test('inversor signup lands on the investor dashboard', async ({ page }) => {
-    await runSignupFlow(page, 'inversor', '/inversor/dashboard', 'Marketplace + portafolio vivo');
+    await runSignupFlow(page, 'inversor', '/inversor/dashboard', 'Marketplace de cheques + portafolio vivo');
   });
 });
