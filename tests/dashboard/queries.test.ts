@@ -216,6 +216,14 @@ describe('Phase 4 settlement read models', () => {
 
     const transactionHistory = [
       {
+        id: 'txn-2',
+        type: 'interest_distribution',
+        amount: 100,
+        at: '2026-03-28T09:01:00.000Z',
+        direction: 'in' as const,
+        description: 'Interés realizado',
+      },
+      {
         id: 'txn-1',
         type: 'settlement_payment',
         amount: 400,
