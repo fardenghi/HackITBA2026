@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js';
 import { getCurrentAuthState, type AuthProfile } from '@/lib/auth/session';
 import type { AuthRole } from '@/lib/auth/types';
 import { buildTimeline, type TimelineItem } from '@/lib/settlement/timeline';
@@ -163,6 +164,22 @@ function roundToCents(value: number) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
+function createPrivilegedReadClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceRoleKey) {
+    throw new Error('Missing Supabase service role environment for settlement read models.');
+  }
+
+  return createClient(url, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+}
+
 function expectedReturnForHolding(
   holding: Pick<InvestorHoldingRow, 'amount' | 'net_amount' | 'invested_principal' | 'invoice_amount' | 'invoice_net_amount'>,
 ) {
@@ -229,6 +246,7 @@ function mapRoleTransactionHistory(transactions: TransactionQueryRow[], userId: 
 
 async function createDefaultDependencies(): Promise<QueryDependencies> {
   const supabase = await createSupabaseServerClient();
+  const privileged = createPrivilegedReadClient();
 
   return {
     getAuthState: getCurrentAuthState,
@@ -331,7 +349,7 @@ async function createDefaultDependencies(): Promise<QueryDependencies> {
     },
     getInvestorInvoiceHolding: async () => null,
     listInvoiceTransactions: async (invoiceId) => {
-      const { data } = await supabase
+      const { data } = await privileged
         .from('transactions')
         .select('id, type, invoice_id, amount, created_at, description, from_user_id, to_user_id, metadata')
         .eq('invoice_id', invoiceId)
@@ -341,13 +359,13 @@ async function createDefaultDependencies(): Promise<QueryDependencies> {
     },
     listInvoiceEvents: async (invoiceId) => {
       const [{ data: invoiceEvents }, { data: fractionEvents }] = await Promise.all([
-        supabase
+        privileged
           .from('events')
           .select('id, created_at, event_type, old_data, new_data, metadata')
           .eq('entity_type', 'invoice')
           .eq('entity_id', invoiceId)
           .order('created_at', { ascending: true }),
-        supabase
+        privileged
           .from('events')
           .select('id, created_at, event_type, old_data, new_data, metadata')
           .eq('entity_type', 'fraction')

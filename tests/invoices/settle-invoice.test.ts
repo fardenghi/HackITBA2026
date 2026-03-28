@@ -348,7 +348,8 @@ describe('Phase 4 settlement boundary', () => {
       .select('new_data, created_at')
       .eq('entity_type', 'invoice')
       .eq('entity_id', invoiceId)
-      .order('created_at', { ascending: true });
+      .order('created_at', { ascending: true })
+      .order('id', { ascending: true });
 
     expect(invoice).toMatchObject({ status: 'settled' });
     expect(invoice?.settled_at).toBeTruthy();
