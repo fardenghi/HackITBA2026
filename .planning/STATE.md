@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: Phase 4 Plan 02
-status: in_progress
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-28T11:27:46Z"
+current_plan: Phase 4 Complete
+status: completed
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-03-28T12:01:55.982Z"
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 21
-  completed_plans: 17
+  completed_plans: 20
 ---
 
 # Project State: Karaí
@@ -24,9 +24,9 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 ## Current Status
 
 - **Phase:** 4 — Settlement, Dashboards & Demo Polish
-- **Status:** In Progress
+- **Status:** Completed
 - **Milestone:** v1
-- **Current plan:** Phase 4 Plan 02
+- **Current plan:** Phase 4 Complete
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 | 1 | Foundation & Auth | Completed |
 | 2 | Invoice Origination & Risk Engine | Completed |
 | 3 | Marketplace & Funding | Completed |
-| 4 | Settlement, Dashboards & Demo Polish | In Progress |
+| 4 | Settlement, Dashboards & Demo Polish | Completed |
 
 ## Recent Activity
 
@@ -51,6 +51,10 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - 2026-03-28 Phase 3 Plan 04 completed (investor marketplace landing, detail page, purchase flow)
 - 2026-03-28 Phase 3 Plan 05 completed (desktop/mobile validation, MCP checks, fallback hardening)
 - 2026-03-28 Phase 4 Plan 01 completed (settlement contracts, DB settlement RPC, disbursement backfill, regression coverage)
+- 2026-03-28 Phase 4 Plan 02 completed (settlement timelines, dashboard metrics, and detail read models)
+- 2026-03-28 Phase 4 Plan 03 completed (full-lifecycle cedente/investor invoice detail views)
+- 2026-03-28 Phase 4 Plan 04 completed (role-specific dashboards with holdings, diversification, and ledger history)
+- 2026-03-28 Phase 4 Plan 05 completed (desktop/mobile phase gate, MCP verification, documented Vercel fallback)
 
 ## Decisions
 
@@ -70,6 +74,9 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - [Phase 04]: Settlement remains a single Supabase RPC so invoice transitions, row locks, and ledger writes stay atomic.
 - [Phase 04]: fund_invoice() now emits the cedente disbursement at 100% funding and settle_invoice() backfills it only for historical funded invoices missing that ledger row.
 - [Phase 04]: Settlement interest allocation gives the final locked fraction the cent-level remainder so payout totals always equal the invoice spread.
+- [Phase 04]: Settlement dashboards and detail views now share one server read-model that normalizes events plus transactions into audited timeline items.
+- [Phase 04]: Invoice detail and dashboard routes stay stable while layering settlement summaries, transaction history, and post-purchase holdings onto the existing role surfaces.
+- [Phase 04]: Phase 4 validation relies on one deterministic desktop/mobile Playwright happy path, plus MCP corroboration and an explicit Vercel fallback when linkage or auth is missing.
 
 ## Performance Metrics
 
@@ -79,11 +86,15 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - 2026-03-28 — Phase `03-marketplace-funding` Plan `04` — duration `5min` — tasks `2` — files `8`
 - 2026-03-28 — Phase `03-marketplace-funding` Plan `05` — duration `16min` — tasks `2` — files `5`
 - 2026-03-28 — Phase `04-settlement-dashboards-demo-polish` Plan `01` — duration `10min` — tasks `3` — files `6`
+- 2026-03-28 — Phase `04-settlement-dashboards-demo-polish` Plan `02` — duration `8min` — tasks `2` — files `4`
+- 2026-03-28 — Phase `04-settlement-dashboards-demo-polish` Plan `03` — duration `10min` — tasks `2` — files `6`
+- 2026-03-28 — Phase `04-settlement-dashboards-demo-polish` Plan `04` — duration `8min` — tasks `2` — files `5`
+- 2026-03-28 — Phase `04-settlement-dashboards-demo-polish` Plan `05` — duration `24min` — tasks `2` — files `4`
 
 ## Session
 
-- **Last session:** 2026-03-28T11:28:51.227Z
-- **Stopped At:** Completed 04-01-PLAN.md
+- **Last session:** 2026-03-28T12:01:55.980Z
+- **Stopped At:** Completed 04-05-PLAN.md
 
 ## Current Readiness
 
@@ -96,9 +107,17 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - Phase 3 Plan 05 summary: `.planning/phases/03-marketplace-funding/03-05-SUMMARY.md`
 - Phase 3 validation artifact: `.planning/phases/03-marketplace-funding/03-VALIDATION.md`
 - Phase 4 Plan 01 summary: `.planning/phases/04-settlement-dashboards-demo-polish/04-01-SUMMARY.md`
+- Phase 4 Plan 02 summary: `.planning/phases/04-settlement-dashboards-demo-polish/04-02-SUMMARY.md`
+- Phase 4 Plan 03 summary: `.planning/phases/04-settlement-dashboards-demo-polish/04-03-SUMMARY.md`
+- Phase 4 Plan 04 summary: `.planning/phases/04-settlement-dashboards-demo-polish/04-04-SUMMARY.md`
+- Phase 4 Plan 05 summary: `.planning/phases/04-settlement-dashboards-demo-polish/04-05-SUMMARY.md`
+- Phase 4 validation artifact: `.planning/phases/04-settlement-dashboards-demo-polish/04-VALIDATION.md`
 - Phase 4 settlement boundary is live: `public.settle_invoice()` now transitions `funded -> settling -> settled`, writes settlement ledger rows, and backfills missing cedente disbursements safely.
 - `public.fund_invoice()` now inserts exactly one `disbursement_to_cedente` row when funding reaches 100%.
+- Cedente and investor dashboards now render settlement-era metrics, holdings, diversification, and transaction history from one server query layer.
+- Invoice detail routes now stay useful through settlement with full lifecycle timelines, financial summaries, and role-aware history.
+- Local Phase 4 desktop/mobile gate passed end-to-end; deployed Vercel replay remains undocumented only because repo linkage and CLI auth are unavailable in this environment.
 - Known external caveat: live BCRA probe paths still return 404 from this environment, so the happy path intentionally uses the pre-warmed cache + deterministic engine.
 
 ---
-*Last updated: 2026-03-28 after Phase 4 Plan 01 completion*
+*Last updated: 2026-03-28 after Phase 4 completion*

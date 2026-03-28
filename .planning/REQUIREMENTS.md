@@ -12,7 +12,7 @@ Requirements for hackathon demo. Each maps to roadmap phases.
 - [x] **INV-01**: PyME can upload invoice with payer CUIT, face value, due date, and description
 - [x] **INV-02**: Invoice follows enforced status lifecycle (draft → validating → validated → tokenized → funding → funded → settling → settled)
 - [x] **INV-03**: System generates SHA-256 hash as unique token ID upon tokenization
-- [ ] **INV-04**: User can view invoice detail with full status history and event timeline
+- [x] **INV-04**: User can view invoice detail with full status history and event timeline
 - [x] **INV-05**: Tokenized invoice is split into configurable fractions for marketplace listing
 
 ### Risk Assessment
@@ -41,14 +41,14 @@ Requirements for hackathon demo. Each maps to roadmap phases.
 ### User Management
 
 - [x] **USER-01**: User can sign up with email/password and select role (cedente or inversor)
-- [ ] **USER-02**: Cedente sees role-specific dashboard (invoices, status, total raised, effective cost)
-- [ ] **USER-03**: Inversor sees role-specific dashboard (portfolio, weighted avg yield, diversification)
+- [x] **USER-02**: Cedente sees role-specific dashboard (invoices, status, total raised, effective cost)
+- [x] **USER-03**: Inversor sees role-specific dashboard (portfolio, weighted avg yield, diversification)
 - [x] **USER-04**: RBAC enforced at middleware (route protection) and database (RLS policies) levels
 
 ### Observability / Audit
 
 - [x] **AUDIT-01**: All state transitions and financial events are logged to append-only event table
-- [ ] **AUDIT-02**: Invoice detail includes visual event timeline showing full lifecycle
+- [x] **AUDIT-02**: Invoice detail includes visual event timeline showing full lifecycle
 
 ## v2 Requirements
 
@@ -93,7 +93,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INV-01 | Phase 2: Invoice Origination & Risk Engine | Completed |
 | INV-02 | Phase 1: Foundation & Auth | Completed |
 | INV-03 | Phase 2: Invoice Origination & Risk Engine | Completed |
-| INV-04 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| INV-04 | Phase 4: Settlement, Dashboards & Demo Polish | Completed |
 | INV-05 | Phase 2: Invoice Origination & Risk Engine | Completed |
 | RISK-01 | Phase 2: Invoice Origination & Risk Engine | Completed |
 | RISK-02 | Phase 2: Invoice Origination & Risk Engine | Completed |
@@ -110,11 +110,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SETT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Completed |
 | SETT-03 | Phase 4: Settlement, Dashboards & Demo Polish | Completed |
 | USER-01 | Phase 1: Foundation & Auth | Completed |
-| USER-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
-| USER-03 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| USER-02 | Phase 4: Settlement, Dashboards & Demo Polish | Completed |
+| USER-03 | Phase 4: Settlement, Dashboards & Demo Polish | Completed |
 | USER-04 | Phase 1: Foundation & Auth | Completed |
 | AUDIT-01 | Phase 1: Foundation & Auth | Completed |
-| AUDIT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| AUDIT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Completed |
 
 **Coverage:**
 - v1 requirements: 25 total
