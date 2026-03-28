@@ -90,13 +90,37 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmapper) | | |
+| INV-01 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| INV-02 | Phase 1: Foundation & Auth | Not started |
+| INV-03 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| INV-04 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| INV-05 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| RISK-01 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| RISK-02 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| RISK-03 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| RISK-04 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| RISK-05 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| RISK-06 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| FUND-01 | Phase 3: Marketplace & Funding | Not started |
+| FUND-02 | Phase 3: Marketplace & Funding | Not started |
+| FUND-03 | Phase 3: Marketplace & Funding | Not started |
+| FUND-04 | Phase 3: Marketplace & Funding | Not started |
+| FUND-05 | Phase 3: Marketplace & Funding | Not started |
+| SETT-01 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| SETT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| SETT-03 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| USER-01 | Phase 1: Foundation & Auth | Not started |
+| USER-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| USER-03 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
+| USER-04 | Phase 1: Foundation & Auth | Not started |
+| AUDIT-01 | Phase 1: Foundation & Auth | Not started |
+| AUDIT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
 
 **Coverage:**
-- v1 requirements: 22 total
-- Mapped to phases: 0
-- Unmapped: 22 ⚠️
+- v1 requirements: 25 total
+- Mapped to phases: 25
+- Unmapped: 0 ✅
 
 ---
 *Requirements defined: 2026-03-28*
-*Last updated: 2026-03-28 after initial definition*
+*Last updated: 2026-03-28 after roadmap creation*
