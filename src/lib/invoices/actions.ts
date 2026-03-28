@@ -4,6 +4,8 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { buildRiskNarrative } from '@/lib/risk/llm';
 import { getBcraSnapshot } from '@/lib/risk/bcra';
 import { scoreRiskDeterministically } from '@/lib/risk/deterministic';
+import { splitInvoiceIntoFractions } from '@/lib/tokenization/fractions';
+import { buildInvoiceTokenHash } from '@/lib/tokenization/hash';
 import {
   invoiceOriginationSchema,
   serializeInvoiceOriginationInput,
@@ -38,6 +40,20 @@ type InvoiceActionServices = {
     explanation: string;
     bcraData: unknown;
   }) => Promise<void>;
+  tokenizeInvoice: (payload: {
+    invoiceId: string;
+    actorId: string;
+    totalFractions: number;
+    tokenHash: string;
+    netAmount: number;
+    fractionAmounts: number[];
+  }) => Promise<{
+    tokenHash: string;
+    netAmount: number;
+    totalFractions: number;
+    status: string;
+    fractions: number[];
+  }>;
 };
 
 function toFieldErrors(error: { flatten: () => { fieldErrors: Record<string, string[]> } }) {
@@ -92,7 +108,76 @@ async function buildServerServices(): Promise<InvoiceActionServices> {
 
       if (error) throw new Error(error.message);
     },
+    async tokenizeInvoice(payload) {
+      const { data, error } = await supabase.rpc('tokenize_invoice', {
+        p_invoice_id: payload.invoiceId,
+        p_fraction_count: payload.totalFractions,
+        p_actor_id: payload.actorId,
+        p_token_hash: payload.tokenHash,
+        p_net_amount: payload.netAmount,
+        p_fraction_amounts: payload.fractionAmounts,
+      });
+
+      if (error || !data) {
+        throw new Error(error?.message ?? 'No pudimos tokenizar la factura.');
+      }
+
+      const row = Array.isArray(data) ? data[0] : data;
+
+      return {
+        tokenHash: row.token_hash,
+        netAmount: Number(row.net_amount),
+        totalFractions: row.total_fractions,
+        status: row.status,
+        fractions: payload.fractionAmounts,
+      };
+    },
   };
+}
+
+function roundCurrency(value: number) {
+  return Number(value.toFixed(2));
+}
+
+export async function finalizeInvoiceTokenization(
+  invoice: {
+    id: string;
+    amount: number;
+    issueDate: string;
+    dueDate: string;
+    pagadorCuit: string;
+    description: string;
+    fractionCount: number;
+    riskTier: string;
+    discountRate: number;
+  },
+  services: {
+    actorId: string;
+    tokenizeInvoice: InvoiceActionServices['tokenizeInvoice'];
+  },
+) {
+  const netAmount = roundCurrency(invoice.amount * (1 - invoice.discountRate));
+  const fractionAmounts = splitInvoiceIntoFractions(netAmount, invoice.fractionCount);
+  const tokenHash = buildInvoiceTokenHash({
+    invoiceId: invoice.id,
+    pagadorCuit: invoice.pagadorCuit,
+    amount: invoice.amount,
+    issueDate: invoice.issueDate,
+    dueDate: invoice.dueDate,
+    description: invoice.description,
+    riskTier: invoice.riskTier,
+    discountRate: invoice.discountRate,
+    fractionCount: invoice.fractionCount,
+  });
+
+  return services.tokenizeInvoice({
+    invoiceId: invoice.id,
+    actorId: services.actorId,
+    totalFractions: invoice.fractionCount,
+    tokenHash,
+    netAmount,
+    fractionAmounts,
+  });
 }
 
 export async function submitInvoiceForOrigination(
@@ -155,6 +240,23 @@ export async function submitInvoiceForOrigination(
   });
 
   await services.transitionInvoice(invoice.id, 'validated', actor.userId);
+  await finalizeInvoiceTokenization(
+    {
+      id: invoice.id,
+      amount: parsed.data.faceValue,
+      issueDate: parsed.data.issueDate,
+      dueDate: parsed.data.dueDate,
+      pagadorCuit: parsed.data.pagadorCuit,
+      description: parsed.data.description,
+      fractionCount: parsed.data.fractionCount,
+      riskTier: deterministic.tier,
+      discountRate: deterministic.discountRate,
+    },
+    {
+      actorId: actor.userId,
+      tokenizeInvoice: services.tokenizeInvoice,
+    },
+  );
 
   return {
     status: 'success',

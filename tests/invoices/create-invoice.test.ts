@@ -106,6 +106,13 @@ describe('invoice origination schema', () => {
           fallbackUsed: false,
         }),
         persistRiskResult,
+        tokenizeInvoice: vi.fn().mockResolvedValue({
+          tokenHash: 'token-1',
+          netAmount: 1282500,
+          totalFractions: 8,
+          status: 'funding',
+          fractions: [160312.5],
+        }),
       },
     );
 
@@ -169,6 +176,13 @@ describe('invoice origination schema', () => {
           fallbackUsed: true,
         }),
         persistRiskResult: vi.fn().mockResolvedValue(undefined),
+        tokenizeInvoice: vi.fn().mockResolvedValue({
+          tokenHash: 'token-2',
+          netAmount: 648000,
+          totalFractions: 6,
+          status: 'funding',
+          fractions: [108000, 108000, 108000, 108000, 108000, 108000],
+        }),
       },
     );
 
@@ -198,6 +212,7 @@ describe('invoice origination schema', () => {
         scoreRisk: vi.fn(),
         buildRiskNarrative: vi.fn(),
         persistRiskResult: vi.fn(),
+        tokenizeInvoice: vi.fn(),
       },
     );
 

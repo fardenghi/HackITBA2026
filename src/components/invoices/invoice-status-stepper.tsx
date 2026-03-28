@@ -10,13 +10,14 @@ const labels: Record<(typeof statuses)[number], string> = {
 
 export function InvoiceStatusStepper({ currentStatus }: { currentStatus: string }) {
   const activeIndex = statuses.indexOf(currentStatus as (typeof statuses)[number]);
+  const resolvedIndex = activeIndex === -1 ? 0 : activeIndex;
 
   return (
     <section className="rounded-3xl border border-white/10 bg-slate-950/50 p-6">
       <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Estado de lifecycle</p>
       <div className="mt-5 grid gap-4 md:grid-cols-5">
         {statuses.map((status, index) => {
-          const isActive = index <= activeIndex;
+          const isActive = index <= resolvedIndex;
           return (
             <div
               key={status}

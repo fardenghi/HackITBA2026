@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getInvoiceDetail } from '@/lib/invoices/queries';
 import { RiskSummaryCard } from '@/components/invoices/risk-summary-card';
 import { InvoiceStatusStepper } from '@/components/invoices/invoice-status-stepper';
+import { TokenizationSummary } from '@/components/invoices/tokenization-summary';
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ invoiceId: string }> }) {
   const { invoiceId } = await params;
@@ -35,6 +36,14 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           discountRate={Number(invoice.discount_rate)}
           explanation={invoice.risk_explanation}
           evidence={evidence}
+        />
+      ) : null}
+
+      {invoice.token_hash && invoice.net_amount !== null && invoice.total_fractions ? (
+        <TokenizationSummary
+          tokenHash={invoice.token_hash}
+          netAmount={Number(invoice.net_amount)}
+          totalFractions={invoice.total_fractions}
         />
       ) : null}
     </section>
