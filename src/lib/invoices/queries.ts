@@ -136,7 +136,7 @@ export async function getInvoiceDetail(
   invoiceId: string,
   overrides?: Partial<InvoiceQueryDependencies>,
 ): Promise<InvoiceDetailView | null> {
-  const dependencies = overrides.getAuthState && overrides.getInvoice
+  const dependencies = overrides?.getAuthState && overrides?.getInvoice
     ? {
         getAuthState: overrides.getAuthState,
         getInvoice: overrides.getInvoice,
