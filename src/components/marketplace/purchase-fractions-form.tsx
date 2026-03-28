@@ -80,8 +80,16 @@ export function PurchaseFractionsForm({ initialSnapshot }: PurchaseFractionsForm
 
         <div className="grid gap-4 md:grid-cols-3">
           <Metric label="Disponibles" value={`${snapshot.availableFractions}`} />
-          <Metric label="Precio por fracción" value={`ARS ${snapshot.perFractionNetAmount.toLocaleString('es-AR')}`} />
-          <Metric label="Retorno por fracción" value={`ARS ${snapshot.perFractionExpectedReturn.toLocaleString('es-AR')}`} />
+          <Metric label="Precio por token" value={`ARS ${snapshot.perFractionNetAmount.toLocaleString('es-AR')}`} />
+          <Metric label="Retorno por token" value={`ARS ${snapshot.perFractionExpectedReturn.toLocaleString('es-AR')}`} />
+        </div>
+
+        <div className="rounded-[1.75rem] border border-sky-300/20 bg-sky-400/10 p-5 text-sm text-sky-50">
+          <div className="grid gap-4 md:grid-cols-3">
+            <Metric label="Tasa anual visible" value={`${(snapshot.discountRate * 100).toFixed(2)}%`} />
+            <Metric label="Yield estimado" value={`${((snapshot.perFractionExpectedReturn / Math.max(snapshot.perFractionNetAmount, 1)) * 100).toFixed(2)}%`} />
+            <Metric label="Funding actual" value={`${snapshot.progressPercentage.toFixed(1)}%`} />
+          </div>
         </div>
 
         <form

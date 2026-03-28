@@ -21,11 +21,11 @@ export function InvoiceFactsList({
     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
       <Fact label="CUIT" value={payerCuit} />
       <Fact label="Días al vencimiento" value={`${daysToMaturity}`} />
-      <Fact label="Tasa" value={`${(discountRate * 100).toFixed(1)}%`} />
-      <Fact label="Fracción" value={`ARS ${perFractionNetAmount.toLocaleString('es-AR')}`} />
+      <Fact label="Tasa anual" value={`${(discountRate * 100).toFixed(1)}%`} />
+      <Fact label="Precio por token" value={`ARS ${perFractionNetAmount.toLocaleString('es-AR')}`} />
       <Fact label="Retorno por fracción" value={`ARS ${perFractionExpectedReturn.toLocaleString('es-AR')}`} />
-      <Fact label="Disponibles" value={`${availableFractions}`} />
-      <Fact label="Progreso" value={`${progressPercentage.toFixed(1)}%`} />
+      <Fact label="Disponibles" value={`${availableFractions} tokens`} />
+      <Fact label="Progreso de funding" value={`${progressPercentage.toFixed(1)}%`} />
     </div>
   );
 }

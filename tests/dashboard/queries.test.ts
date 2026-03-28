@@ -214,7 +214,7 @@ describe('Phase 4 settlement read models', () => {
     };
 
     const timeline = [
-      { id: 'evt-1', at: '2026-03-28T08:00:00.000Z', kind: 'status' as const, label: 'Factura pasó a funded' },
+      { id: 'evt-1', at: '2026-03-28T08:00:00.000Z', kind: 'status' as const, label: 'Cheque pasó a funded' },
       { id: 'txn-1', at: '2026-03-28T09:00:00.000Z', kind: 'financial' as const, label: 'Pago de capital', amount: 400 },
     ];
 

@@ -19,7 +19,7 @@ export function SettlementSummary({
   interestTotal,
   cedenteDisbursementTotal,
   heading = 'Resumen financiero',
-  description = 'Principal, spread y desembolsos registrados para esta factura.',
+  description = 'Principal, spread y desembolsos registrados para este cheque.',
 }: SettlementSummaryProps) {
   const totalInvestorPayout = principalTotal + interestTotal;
 

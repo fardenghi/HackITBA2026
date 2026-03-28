@@ -26,15 +26,11 @@ export const invoiceOriginationSchema = z
   .object({
     pagadorCuit: cuitSchema,
     pagadorName: z.string().trim().min(2, 'Ingresá el nombre del pagador.'),
-    invoiceNumber: z.string().trim().min(1, 'Ingresá el número de factura.'),
+    invoiceNumber: z.string().trim().min(1, 'Ingresá el número de cheque.'),
     faceValue: z.coerce.number().positive('El monto debe ser mayor a 0.'),
     issueDate: dateSchema,
     dueDate: dateSchema,
-    description: z.string().trim().min(5, 'Ingresá una descripción de la factura.'),
-    fractionCount: z.coerce
-      .number()
-      .int('La cantidad de fracciones debe ser entera.')
-      .positive('La cantidad de fracciones debe ser mayor a 0.'),
+    description: z.string().trim().min(5, 'Ingresá una descripción del cheque.'),
   })
   .refine((value) => value.dueDate >= value.issueDate, {
     path: ['dueDate'],
@@ -57,6 +53,5 @@ export function serializeInvoiceOriginationInput(input: InvoiceOriginationInput)
     issue_date: input.issueDate,
     due_date: input.dueDate,
     description: input.description,
-    total_fractions: input.fractionCount,
   };
 }

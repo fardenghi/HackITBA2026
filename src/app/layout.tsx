@@ -4,7 +4,7 @@ import { AppShell } from '@/components/layout/app-shell';
 
 export const metadata: Metadata = {
   title: 'Karaí',
-  description: 'Crowdfactoring platform for Argentine SMEs and investors.',
+  description: 'Plataforma de crowdfactoring con riesgo crediticio asistido por IA, cheques tokenizados y experiencia navegable para PyMEs e inversores.',
 };
 
 export default function RootLayout({

@@ -6,8 +6,8 @@ describe('invoice tokenization orchestration', () => {
     const tokenizeInvoice = vi.fn().mockResolvedValue({
       tokenHash: 'abc123',
       netAmount: 1275000,
-      totalFractions: 3,
-      fractions: [425000, 425000, 425000],
+      totalFractions: 13,
+      fractions: new Array(12).fill(98076.92).concat(98076.96),
       status: 'funding',
     });
 
@@ -18,8 +18,7 @@ describe('invoice tokenization orchestration', () => {
         dueDate: '2026-06-28',
         issueDate: '2026-03-28',
         pagadorCuit: '30712345678',
-        description: 'Factura tokenizable',
-        fractionCount: 3,
+        description: 'Cheque tokenizable',
         riskTier: 'A',
         discountRate: 0.15,
       },
@@ -33,9 +32,9 @@ describe('invoice tokenization orchestration', () => {
       expect.objectContaining({
         invoiceId: 'invoice-1',
         actorId: 'cedente-1',
-        totalFractions: 3,
+        totalFractions: 13,
         netAmount: 1275000,
-        fractionAmounts: [425000, 425000, 425000],
+        fractionAmounts: new Array(12).fill(98076.92).concat(98076.96),
       }),
     );
     expect(result).toMatchObject({

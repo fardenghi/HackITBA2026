@@ -17,7 +17,7 @@ export function InvoiceStatusStepper({ currentStatus }: { currentStatus: string 
 
   return (
     <section className="rounded-3xl border border-white/10 bg-slate-950/50 p-6">
-      <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Estado de lifecycle</p>
+      <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Estado del cheque</p>
       <div className="mt-5 grid gap-4 md:grid-cols-4 xl:grid-cols-8">
         {statuses.map((status, index) => {
           const isActive = index <= resolvedIndex;

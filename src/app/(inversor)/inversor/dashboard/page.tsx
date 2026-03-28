@@ -61,7 +61,7 @@ export default async function InversorDashboardPage() {
 
       <section className="rounded-3xl border border-white/10 bg-slate-950/50 p-6">
         <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Holdings</p>
-        <h2 className="mt-2 text-2xl font-semibold text-white">Facturas compradas y estado del retorno</h2>
+        <h2 className="mt-2 text-2xl font-semibold text-white">Cheques comprados y estado del retorno</h2>
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {dashboard.holdings.map((holding) => (
             <article key={holding.invoiceId} className="rounded-2xl border border-white/10 bg-black/20 p-5">
@@ -76,6 +76,8 @@ export default async function InversorDashboardPage() {
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <MetricCard label="Principal" value={formatCurrency(holding.investedPrincipal)} />
                 <MetricCard label="Retorno esperado" value={formatCurrency(holding.expectedReturn)} />
+                <MetricCard label="Retorno actual" value={formatCurrency(holding.realizedReturn)} />
+                <MetricCard label="Tokens propios" value={`${holding.ownedFractions}`} />
               </div>
               <div className="mt-4 flex justify-end">
                 <Link className="text-sm font-semibold text-sky-200" href={`/inversor/invoices/${holding.invoiceId}`}>

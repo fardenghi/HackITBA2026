@@ -19,7 +19,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
   return (
     <section className="mx-auto max-w-6xl space-y-8 px-6 py-16">
       <div className="rounded-[2rem] border border-white/10 bg-slate-950/40 p-8">
-        <p className="text-sm uppercase tracking-[0.3em] text-emerald-200">Factura originada</p>
+        <p className="text-sm uppercase tracking-[0.3em] text-emerald-200">Cheque originado</p>
         <h1 className="mt-4 text-4xl font-semibold text-white">{invoice.invoice_number}</h1>
         <div className="mt-6 grid gap-4 md:grid-cols-4">
           <Metric label="Pagador" value={invoice.pagador_name} />
@@ -59,7 +59,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
 
       <SettlementSummary
         cedenteDisbursementTotal={settlementView.settlement.cedenteDisbursementTotal}
-        description="Leé el capital levantado, el spread liquidado y el desembolso al cedente sin recalcular nada en cliente."
+        description="Leé el capital levantado, el spread liquidado y el desembolso al cedente sin recalcular nada en cliente para este cheque."
         interestTotal={settlementView.settlement.interestTotal}
         principalTotal={settlementView.settlement.principalTotal}
       />

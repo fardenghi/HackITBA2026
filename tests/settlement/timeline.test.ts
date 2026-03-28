@@ -65,7 +65,7 @@ describe('settlement timeline normalization', () => {
         id: 'evt-validated',
         at: '2026-03-28T10:00:00.000Z',
         kind: 'status',
-        label: 'Factura pasó a validated',
+        label: 'Cheque pasó a validated',
         metadata: { status: 'validated' },
       },
       {
@@ -103,7 +103,7 @@ describe('settlement timeline normalization', () => {
         id: 'evt-settled',
         at: '2026-03-28T15:00:00.000Z',
         kind: 'status',
-        label: 'Factura pasó a settled',
+        label: 'Cheque pasó a settled',
         metadata: { status: 'settled' },
       },
     ]);

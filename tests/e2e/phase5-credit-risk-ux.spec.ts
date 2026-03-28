@@ -94,9 +94,9 @@ test('phase 5 risk detail and investor cheque navigation work on desktop and mob
   await login(page, cedenteEmail, password, /\/cedente\/dashboard$/);
 
   await page.goto('/cedente/invoices/new');
-  await page.getByLabel('Número de factura').fill(invoiceNumber);
-  await page.getByLabel('Descripción').fill('Factura creada para validar riesgo estructurado y navegación inversora.');
-  await page.getByRole('button', { name: 'Originar factura' }).click();
+  await page.getByLabel('Número de cheque').fill(invoiceNumber);
+  await page.getByLabel('Descripción').fill('Cheque creado para validar riesgo estructurado y navegación inversora.');
+  await page.getByRole('button', { name: 'Originar cheque' }).click();
 
   await expect(page).toHaveURL(/\/cedente\/invoices\/[^/]+$/, { timeout: 30_000 });
   await expect(page.getByRole('heading', { name: invoiceNumber })).toBeVisible({ timeout: 30_000 });
@@ -120,7 +120,7 @@ test('phase 5 risk detail and investor cheque navigation work on desktop and mob
   await expect(page).toHaveURL(/\/inversor\/invoices\/[^/]+$/);
   await expect(page.getByText('Días al vencimiento', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('Retorno por fracción', { exact: true }).first()).toBeVisible();
-  await expect(page.getByText('Fracción', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('Precio por token', { exact: true }).first()).toBeVisible();
 
   await page.goto(`/inversor/invoices/${invoiceId}`);
   await expect(page.getByText('Días al vencimiento', { exact: true }).first()).toBeVisible();

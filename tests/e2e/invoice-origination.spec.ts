@@ -68,9 +68,9 @@ test('cedente can originate and tokenize an invoice into funding', async ({ page
   await expect(page).toHaveURL(/\/cedente\/dashboard$/);
 
   await page.goto('/cedente/invoices/new');
-  await page.getByLabel('Número de factura').fill(invoiceNumber);
-  await page.getByLabel('Descripción').fill('Factura originada desde Playwright para validar el happy path completo.');
-  await page.getByRole('button', { name: 'Originar factura' }).click();
+  await page.getByLabel('Número de cheque').fill(invoiceNumber);
+  await page.getByLabel('Descripción').fill('Cheque originado desde Playwright para validar el happy path completo.');
+  await page.getByRole('button', { name: 'Originar cheque' }).click();
 
   await expect(page).toHaveURL(/\/cedente\/invoices\/[^/]+$/, { timeout: 30_000 });
   await expect(page.getByRole('heading', { name: invoiceNumber })).toBeVisible({ timeout: 30_000 });

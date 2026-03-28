@@ -51,7 +51,7 @@ function buildEventLabel(event: EventRow) {
   if (event.event_type === 'invoice.transitioned') {
     const status = getString(event.new_data?.status);
     return {
-      label: `Factura pasó a ${status ?? 'estado desconocido'}`,
+      label: `Cheque pasó a ${status ?? 'estado desconocido'}`,
       metadata: status ? { status } : undefined,
     };
   }

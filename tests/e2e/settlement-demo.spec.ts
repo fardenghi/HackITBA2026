@@ -82,9 +82,9 @@ test('desktop/mobile happy path runs from signup through settlement dashboards a
     await expect(page.getByRole('heading', { name: 'Control de colocación y settlement' })).toBeVisible();
 
     await page.goto('/cedente/invoices/new');
-    await page.getByLabel('Número de factura').fill(invoiceNumber);
-    await page.getByLabel('Descripción').fill('Factura originada por el spec Phase 4 para validar funding, settlement y dashboards.');
-    await page.getByRole('button', { name: 'Originar factura' }).click();
+    await page.getByLabel('Número de cheque').fill(invoiceNumber);
+    await page.getByLabel('Descripción').fill('Cheque originado por el spec Phase 4 para validar funding, settlement y dashboards.');
+    await page.getByRole('button', { name: 'Originar cheque' }).click();
 
     await expect(page).toHaveURL(/\/cedente\/invoices\/[^/]+$/, { timeout: 45_000 });
     await expect(page.getByRole('heading', { name: invoiceNumber })).toBeVisible({ timeout: 45_000 });
@@ -100,7 +100,7 @@ test('desktop/mobile happy path runs from signup through settlement dashboards a
 
   await test.step('investor signs up, funds the invoice, and sees the holding state', async () => {
     await signup(investorPage, 'inversor', investorEmail, password, 'Investor Demo');
-    await expect(investorPage.getByRole('heading', { name: 'Marketplace + portafolio vivo' })).toBeVisible();
+    await expect(investorPage.getByRole('heading', { name: 'Marketplace de cheques + portafolio vivo' })).toBeVisible();
 
     const invoiceCard = investorPage.locator('article').filter({ hasText: invoiceNumber }).first();
     await expect(invoiceCard).toBeVisible({ timeout: 45_000 });
