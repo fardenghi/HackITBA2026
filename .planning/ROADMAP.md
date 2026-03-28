@@ -28,7 +28,15 @@
 3. RLS enabled on all 6 tables — anon key cannot read or write data without authenticated session
 4. `transition_invoice()` function rejects invalid state transitions (e.g., `draft → funded` returns error)
 
-**Plans:** (populated during planning)
+**Plans:** 6 plans
+
+Plans:
+- [x] 01-01-PLAN.md — Scaffold the Next.js app and stable Phase 1 route shells
+- [x] 01-02-PLAN.md — Define Supabase SSR/auth contracts and Phase 1 test harnesses
+- [x] 01-03-PLAN.md — Create the versioned Supabase schema, transition function, and audit invariants
+- [x] 01-04-PLAN.md — Implement immediate-login role-select auth flow with desktop/mobile coverage
+- [x] 01-05-PLAN.md — Enforce RBAC across proxy/server guards and database RLS policies
+- [x] 01-06-PLAN.md — Seed, validate locally and on Vercel, and update the phase validation artifact
 
 **Notes:**
 - This is the most critical phase per research: float precision (`NUMERIC(15,2)`), race condition prevention (`FOR UPDATE`), and fraction rounding constraints are baked into the schema here
@@ -49,7 +57,14 @@
 4. Validated invoice is tokenized (SHA-256 hash generated) and split into configurable fractions with correct remainder handling
 5. Invoice transitions through `draft → validating → validated → tokenized → funding` in enforced sequence
 
-**Plans:** (populated during planning)
+**Plans:** 5 plans
+
+Plans:
+- [x] 02-01-PLAN.md — Close the invoice description schema gap and verify the live BCRA contract early
+- [x] 02-02-PLAN.md — Build deterministic scoring, pricing, fallback handling, and LLM narrative generation
+- [x] 02-03-PLAN.md — Implement the cedente invoice origination flow and validated risk result UI
+- [x] 02-04-PLAN.md — Tokenize validated invoices and split exact fractions with remainder-safe handling
+- [x] 02-05-PLAN.md — Verify the full Phase 2 happy path with Vitest plus desktop/mobile Playwright coverage
 
 **Notes:**
 - Deterministic fallback first, LLM second (research key insight #1)

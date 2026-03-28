@@ -9,20 +9,20 @@ Requirements for hackathon demo. Each maps to roadmap phases.
 
 ### Invoice Management
 
-- [ ] **INV-01**: PyME can upload invoice with payer CUIT, face value, due date, and description
-- [ ] **INV-02**: Invoice follows enforced status lifecycle (draft → validating → validated → tokenized → funding → funded → settling → settled)
-- [ ] **INV-03**: System generates SHA-256 hash as unique token ID upon tokenization
+- [x] **INV-01**: PyME can upload invoice with payer CUIT, face value, due date, and description
+- [x] **INV-02**: Invoice follows enforced status lifecycle (draft → validating → validated → tokenized → funding → funded → settling → settled)
+- [x] **INV-03**: System generates SHA-256 hash as unique token ID upon tokenization
 - [ ] **INV-04**: User can view invoice detail with full status history and event timeline
-- [ ] **INV-05**: Tokenized invoice is split into configurable fractions for marketplace listing
+- [x] **INV-05**: Tokenized invoice is split into configurable fractions for marketplace listing
 
 ### Risk Assessment
 
-- [ ] **RISK-01**: System scores payer credit risk (not the cedente) using payer's CUIT
-- [ ] **RISK-02**: System classifies payer into risk tier (A/B/C/D) based on scoring
-- [ ] **RISK-03**: System calculates dynamic discount rate from risk tier + days to maturity
-- [ ] **RISK-04**: System fetches real BCRA data (deudas actuales, históricas, cheques rechazados) for the payer
-- [ ] **RISK-05**: LLM generates human-readable risk narrative citing specific BCRA data points
-- [ ] **RISK-06**: Deterministic fallback engine produces risk tier + rate when BCRA or LLM are unavailable
+- [x] **RISK-01**: System scores payer credit risk (not the cedente) using payer's CUIT
+- [x] **RISK-02**: System classifies payer into risk tier (A/B/C/D) based on scoring
+- [x] **RISK-03**: System calculates dynamic discount rate from risk tier + days to maturity
+- [x] **RISK-04**: System fetches real BCRA data (deudas actuales, históricas, cheques rechazados) for the payer
+- [x] **RISK-05**: LLM generates human-readable risk narrative citing specific BCRA data points
+- [x] **RISK-06**: Deterministic fallback engine produces risk tier + rate when BCRA or LLM are unavailable
 
 ### Investment / Funding
 
@@ -40,14 +40,14 @@ Requirements for hackathon demo. Each maps to roadmap phases.
 
 ### User Management
 
-- [ ] **USER-01**: User can sign up with email/password and select role (cedente or inversor)
+- [x] **USER-01**: User can sign up with email/password and select role (cedente or inversor)
 - [ ] **USER-02**: Cedente sees role-specific dashboard (invoices, status, total raised, effective cost)
 - [ ] **USER-03**: Inversor sees role-specific dashboard (portfolio, weighted avg yield, diversification)
-- [ ] **USER-04**: RBAC enforced at middleware (route protection) and database (RLS policies) levels
+- [x] **USER-04**: RBAC enforced at middleware (route protection) and database (RLS policies) levels
 
 ### Observability / Audit
 
-- [ ] **AUDIT-01**: All state transitions and financial events are logged to append-only event table
+- [x] **AUDIT-01**: All state transitions and financial events are logged to append-only event table
 - [ ] **AUDIT-02**: Invoice detail includes visual event timeline showing full lifecycle
 
 ## v2 Requirements
@@ -90,17 +90,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INV-01 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| INV-02 | Phase 1: Foundation & Auth | Not started |
-| INV-03 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| INV-01 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| INV-02 | Phase 1: Foundation & Auth | Completed |
+| INV-03 | Phase 2: Invoice Origination & Risk Engine | Completed |
 | INV-04 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
-| INV-05 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| RISK-01 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| RISK-02 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| RISK-03 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| RISK-04 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| RISK-05 | Phase 2: Invoice Origination & Risk Engine | Not started |
-| RISK-06 | Phase 2: Invoice Origination & Risk Engine | Not started |
+| INV-05 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| RISK-01 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| RISK-02 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| RISK-03 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| RISK-04 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| RISK-05 | Phase 2: Invoice Origination & Risk Engine | Completed |
+| RISK-06 | Phase 2: Invoice Origination & Risk Engine | Completed |
 | FUND-01 | Phase 3: Marketplace & Funding | Not started |
 | FUND-02 | Phase 3: Marketplace & Funding | Not started |
 | FUND-03 | Phase 3: Marketplace & Funding | Not started |
@@ -109,11 +109,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SETT-01 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
 | SETT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
 | SETT-03 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
-| USER-01 | Phase 1: Foundation & Auth | Not started |
+| USER-01 | Phase 1: Foundation & Auth | Completed |
 | USER-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
 | USER-03 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
-| USER-04 | Phase 1: Foundation & Auth | Not started |
-| AUDIT-01 | Phase 1: Foundation & Auth | Not started |
+| USER-04 | Phase 1: Foundation & Auth | Completed |
+| AUDIT-01 | Phase 1: Foundation & Auth | Completed |
 | AUDIT-02 | Phase 4: Settlement, Dashboards & Demo Polish | Not started |
 
 **Coverage:**
@@ -123,4 +123,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-28*
-*Last updated: 2026-03-28 after roadmap creation*
+*Last updated: 2026-03-28 after Phase 2 execution*
