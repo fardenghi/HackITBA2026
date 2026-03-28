@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 03-04-PLAN.md next
+current_plan: 03-05-PLAN.md next
 status: executing
-stopped_at: Completed 03-marketplace-funding-03-PLAN.md
-last_updated: "2026-03-28T10:38:30.000Z"
+stopped_at: Completed 03-marketplace-funding-04-PLAN.md
+last_updated: "2026-03-28T10:43:45.000Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 16
-  completed_plans: 14
+  completed_plans: 15
 ---
 
 # Project State: Karaí
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - **Phase:** 3 — Marketplace & Funding
 - **Status:** In progress
 - **Milestone:** v1
-- **Current plan:** 03-04-PLAN.md next
+- **Current plan:** 03-05-PLAN.md next
 
 ## Phase Progress
 
@@ -34,7 +34,7 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 |---|-------|--------|
 | 1 | Foundation & Auth | Completed |
 | 2 | Invoice Origination & Risk Engine | Completed |
-| 3 | Marketplace & Funding | In progress (3/5 plans complete) |
+| 3 | Marketplace & Funding | In progress (4/5 plans complete) |
 | 4 | Settlement, Dashboards & Demo Polish | Not started |
 
 ## Recent Activity
@@ -48,6 +48,7 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - 2026-03-28 Phase 3 Plan 01 completed (marketplace contracts, funding math, investor read model)
 - 2026-03-28 Phase 3 Plan 02 completed (atomic funding RPC, locking, purchase audit trigger, realtime publication)
 - 2026-03-28 Phase 3 Plan 03 completed (purchase action, realtime fallback hook, shared funding widgets)
+- 2026-03-28 Phase 3 Plan 04 completed (investor marketplace landing, detail page, purchase flow)
 
 ## Decisions
 
@@ -60,17 +61,21 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - 2026-03-28 Purchase validation now lives in one server action before any `fund_invoice()` RPC call.
 - 2026-03-28 Marketplace clients prefer invoice subscriptions and only fall back to 2-second polling when channel health drops.
 - 2026-03-28 Funding progress, return preview, and realtime status now render through shared marketplace widgets.
+- 2026-03-28 `/inversor/dashboard` remains the single investor landing route and now renders the live funding marketplace.
+- 2026-03-28 Shared marketplace read-model serialization now powers both server queries and browser polling refreshes.
+- 2026-03-28 Investor detail pages can stay live with typed funding snapshots while purchases submit through the server action boundary.
 
 ## Performance Metrics
 
 - 2026-03-28 — Phase `03-marketplace-funding` Plan `01` — duration `5min` — tasks `3` — files `6`
 - 2026-03-28 — Phase `03-marketplace-funding` Plan `02` — duration `6min` — tasks `2` — files `2`
 - 2026-03-28 — Phase `03-marketplace-funding` Plan `03` — duration `8min` — tasks `2` — files `6`
+- 2026-03-28 — Phase `03-marketplace-funding` Plan `04` — duration `5min` — tasks `2` — files `8`
 
 ## Session
 
-- **Last session:** 2026-03-28T10:38:30.000Z
-- **Stopped At:** Completed 03-marketplace-funding-03-PLAN.md
+- **Last session:** 2026-03-28T10:43:45.000Z
+- **Stopped At:** Completed 03-marketplace-funding-04-PLAN.md
 
 ## Current Readiness
 
@@ -79,8 +84,9 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 - Phase 3 Plan 01 summary: `.planning/phases/03-marketplace-funding/03-01-SUMMARY.md`
 - Phase 3 Plan 02 summary: `.planning/phases/03-marketplace-funding/03-02-SUMMARY.md`
 - Phase 3 Plan 03 summary: `.planning/phases/03-marketplace-funding/03-03-SUMMARY.md`
-- Next execution target: `03-04-PLAN.md` for the investor marketplace landing and invoice detail purchase flow.
+- Phase 3 Plan 04 summary: `.planning/phases/03-marketplace-funding/03-04-SUMMARY.md`
+- Next execution target: `03-05-PLAN.md` for end-to-end validation, Playwright automation, and MCP browser verification.
 - Known external caveat: live BCRA probe paths still return 404 from this environment, so the happy path intentionally uses the pre-warmed cache + deterministic engine.
 
 ---
-*Last updated: 2026-03-28 after Phase 3 Plan 03 execution*
+*Last updated: 2026-03-28 after Phase 3 Plan 04 execution*
