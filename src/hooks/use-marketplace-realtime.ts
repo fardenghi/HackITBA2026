@@ -62,7 +62,7 @@ export function patchMarketplaceInvoices(
   });
 }
 
-export function createMarketplaceRealtimeController({
+export function createMarketplaceRealtimeController<TInvoice extends MarketplaceInvoiceCard>({
   initialInvoices,
   refresh,
   onInvoicesChange,
@@ -70,7 +70,15 @@ export function createMarketplaceRealtimeController({
   subscribeToInvoices,
   setIntervalFn = window.setInterval.bind(window),
   clearIntervalFn = window.clearInterval.bind(window),
-}: MarketplaceRealtimeControllerOptions) {
+}: {
+  initialInvoices: TInvoice[];
+  refresh: () => Promise<TInvoice[]>;
+  onInvoicesChange: (next: TInvoice[]) => void;
+  onModeChange: (mode: MarketplaceRealtimeMode) => void;
+  subscribeToInvoices: (handlers: SubscribeHandlers) => () => void;
+  setIntervalFn?: typeof window.setInterval;
+  clearIntervalFn?: typeof window.clearInterval;
+}) {
   let invoices = initialInvoices;
   let unsubscribe: () => void = () => {};
   let pollingHandle: number | null = null;
@@ -115,8 +123,8 @@ export function createMarketplaceRealtimeController({
           }
         },
         onInvoiceUpdate(patch) {
-          invoices = patchMarketplaceInvoices(invoices, patch);
-          onInvoicesChange(invoices);
+          invoices = patchMarketplaceInvoices(invoices, patch) as TInvoice[];
+          onInvoicesChange(invoices as TInvoice[]);
         },
       });
     },
@@ -150,7 +158,13 @@ function buildInvoiceSubscription(
     .subscribe((status) => handlers.onStatusChange(status));
 }
 
-export function useMarketplaceRealtime({ initialInvoices, refresh }: UseMarketplaceRealtimeOptions) {
+export function useMarketplaceRealtime<TInvoice extends MarketplaceInvoiceCard>({
+  initialInvoices,
+  refresh,
+}: {
+  initialInvoices: TInvoice[];
+  refresh: () => Promise<TInvoice[]>;
+}) {
   const [invoices, setInvoices] = useState(initialInvoices);
   const [mode, setMode] = useState<MarketplaceRealtimeMode>('connecting');
 
