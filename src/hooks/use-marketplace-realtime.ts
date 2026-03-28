@@ -14,6 +14,9 @@ export type MarketplaceInvoicePatch = {
   status: 'funding' | 'funded';
 };
 
+type IntervalHandle = ReturnType<typeof globalThis.setInterval>;
+type TimeoutHandle = ReturnType<typeof globalThis.setTimeout>;
+
 type SubscribeHandlers = {
   onStatusChange: (status: string) => void;
   onInvoiceUpdate: (patch: MarketplaceInvoicePatch) => void;
@@ -25,8 +28,11 @@ type MarketplaceRealtimeControllerOptions = {
   onInvoicesChange: (next: MarketplaceInvoiceCard[]) => void;
   onModeChange: (mode: MarketplaceRealtimeMode) => void;
   subscribeToInvoices: (handlers: SubscribeHandlers) => () => void;
-  setIntervalFn?: typeof window.setInterval;
-  clearIntervalFn?: typeof window.clearInterval;
+  setIntervalFn?: (callback: () => void, delay: number) => IntervalHandle;
+  clearIntervalFn?: (handle: IntervalHandle) => void;
+  setTimeoutFn?: (callback: () => void, delay: number) => TimeoutHandle;
+  clearTimeoutFn?: (handle: TimeoutHandle) => void;
+  fallbackDelayMs?: number;
 };
 
 type UseMarketplaceRealtimeOptions = {
@@ -62,26 +68,38 @@ export function patchMarketplaceInvoices(
   });
 }
 
+const defaultSetInterval = (callback: () => void, delay: number) => globalThis.setInterval(callback, delay);
+const defaultClearInterval = (handle: IntervalHandle) => globalThis.clearInterval(handle);
+const defaultSetTimeout = (callback: () => void, delay: number) => globalThis.setTimeout(callback, delay);
+const defaultClearTimeout = (handle: TimeoutHandle) => globalThis.clearTimeout(handle);
+
 export function createMarketplaceRealtimeController<TInvoice extends MarketplaceInvoiceCard>({
   initialInvoices,
   refresh,
   onInvoicesChange,
   onModeChange,
   subscribeToInvoices,
-  setIntervalFn = window.setInterval.bind(window),
-  clearIntervalFn = window.clearInterval.bind(window),
+  setIntervalFn = defaultSetInterval,
+  clearIntervalFn = defaultClearInterval,
+  setTimeoutFn = defaultSetTimeout,
+  clearTimeoutFn = defaultClearTimeout,
+  fallbackDelayMs = 2000,
 }: {
   initialInvoices: TInvoice[];
   refresh: () => Promise<TInvoice[]>;
   onInvoicesChange: (next: TInvoice[]) => void;
   onModeChange: (mode: MarketplaceRealtimeMode) => void;
   subscribeToInvoices: (handlers: SubscribeHandlers) => () => void;
-  setIntervalFn?: typeof window.setInterval;
-  clearIntervalFn?: typeof window.clearInterval;
+  setIntervalFn?: (callback: () => void, delay: number) => IntervalHandle;
+  clearIntervalFn?: (handle: IntervalHandle) => void;
+  setTimeoutFn?: (callback: () => void, delay: number) => TimeoutHandle;
+  clearTimeoutFn?: (handle: TimeoutHandle) => void;
+  fallbackDelayMs?: number;
 }) {
   let invoices = initialInvoices;
   let unsubscribe: () => void = () => {};
-  let pollingHandle: number | null = null;
+  let pollingHandle: IntervalHandle | null = null;
+  let fallbackTimeoutHandle: TimeoutHandle | null = null;
 
   async function runRefresh() {
     const next = await refresh();
@@ -96,7 +114,16 @@ export function createMarketplaceRealtimeController<TInvoice extends Marketplace
     }
   }
 
+  function clearFallbackTimeout() {
+    if (fallbackTimeoutHandle !== null) {
+      clearTimeoutFn(fallbackTimeoutHandle);
+      fallbackTimeoutHandle = null;
+    }
+  }
+
   function startPolling() {
+    clearFallbackTimeout();
+
     if (pollingHandle !== null) {
       return;
     }
@@ -110,9 +137,14 @@ export function createMarketplaceRealtimeController<TInvoice extends Marketplace
   return {
     start() {
       onModeChange('connecting');
+      fallbackTimeoutHandle = setTimeoutFn(() => {
+        startPolling();
+      }, fallbackDelayMs);
+
       unsubscribe = subscribeToInvoices({
         onStatusChange(status) {
           if (isLiveStatus(status)) {
+            clearFallbackTimeout();
             stopPolling();
             onModeChange('live');
             return;
@@ -129,6 +161,7 @@ export function createMarketplaceRealtimeController<TInvoice extends Marketplace
       });
     },
     stop() {
+      clearFallbackTimeout();
       unsubscribe();
       stopPolling();
     },
@@ -169,6 +202,10 @@ export function useMarketplaceRealtime<TInvoice extends MarketplaceInvoiceCard>(
   const [mode, setMode] = useState<MarketplaceRealtimeMode>('connecting');
 
   const refreshStable = useMemo(() => refresh, [refresh]);
+
+  useEffect(() => {
+    setInvoices(initialInvoices);
+  }, [initialInvoices]);
 
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();

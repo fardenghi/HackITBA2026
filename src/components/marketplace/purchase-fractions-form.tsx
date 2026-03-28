@@ -20,6 +20,7 @@ export function PurchaseFractionsForm({ initialSnapshot }: PurchaseFractionsForm
   const [isPending, startTransition] = useTransition();
   const [fractionCount, setFractionCount] = useState(1);
   const [result, setResult] = useState<PurchaseFractionsResult | null>(null);
+  const initialInvoices = useMemo(() => [initialSnapshot], [initialSnapshot]);
 
   const refresh = useCallback(async () => {
     const supabase = createSupabaseBrowserClient();
@@ -52,7 +53,7 @@ export function PurchaseFractionsForm({ initialSnapshot }: PurchaseFractionsForm
   }, [initialSnapshot]);
 
   const { invoices, mode } = useMarketplaceRealtime({
-    initialInvoices: [initialSnapshot],
+    initialInvoices,
     refresh,
   });
   const snapshot = invoices[0] ?? initialSnapshot;

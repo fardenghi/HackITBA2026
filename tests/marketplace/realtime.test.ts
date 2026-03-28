@@ -110,7 +110,7 @@ describe('marketplace realtime controller', () => {
     ]);
   });
 
-  it('falls back to polling every 2 seconds when the channel closes or errors', async () => {
+  it('falls back to polling every 2 seconds when the channel never subscribes and recovers on reconnect', async () => {
     const refresh = vi.fn().mockResolvedValue([
       {
         ...baseInvoice,
@@ -122,6 +122,7 @@ describe('marketplace realtime controller', () => {
     const snapshots: MarketplaceInvoiceCard[][] = [];
     const clearIntervalFn = vi.fn();
     let pollCallback: (() => void | Promise<void>) | undefined;
+    let timeoutCallback: (() => void) | undefined;
     let statusHandler: ((status: string) => void) | undefined;
 
     const controller = createMarketplaceRealtimeController({
@@ -138,10 +139,15 @@ describe('marketplace realtime controller', () => {
         return 7;
       }),
       clearIntervalFn,
+      setTimeoutFn: vi.fn((callback) => {
+        timeoutCallback = callback;
+        return 9;
+      }),
+      clearTimeoutFn: vi.fn(),
     });
 
     controller.start();
-    statusHandler?.('CHANNEL_ERROR');
+    timeoutCallback?.();
     await pollCallback?.();
     statusHandler?.('SUBSCRIBED');
 
