@@ -31,7 +31,6 @@ SUPABASE_SERVICE_ROLE_KEY=
 OPENAI_API_KEY=
 ```
 
-`OPENAI_API_KEY` es opcional si querés la narrativa IA; sin eso la app usa fallback determinístico.
 
 ## Ejecutar
 
@@ -43,11 +42,4 @@ npm run dev
 
 Abrir `http://localhost:3000`.
 
-## Comandos útiles
 
-```bash
-npm test
-npm run lint
-npm run build
-npm run start
-```
