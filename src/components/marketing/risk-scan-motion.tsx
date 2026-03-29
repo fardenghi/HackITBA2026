@@ -1,5 +1,5 @@
 const metrics = [
-  ['duracion', '90 dias'],
+  ['duración', '90 días'],
   ['colateral', '68%'],
   ['historial', 'estable'],
   ['liquidez', 'media'],
@@ -23,7 +23,7 @@ export function RiskScanMotion() {
         ))}
       </div>
       <div className="risk-score-box">BBB</div>
-      <p className="risk-label">analisis de riesgo con ia + bcra</p>
+      <p className="risk-label">análisis de riesgo con ia + bcra</p>
     </div>
   );
 }

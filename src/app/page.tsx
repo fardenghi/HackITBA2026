@@ -16,7 +16,7 @@ const journey = [
   },
   {
     step: '03',
-    title: 'Se tokeniza automaticamente',
+    title: 'Se tokeniza automáticamente',
     description: 'La emisión se divide en la mayor cantidad de fracciones posible para no superar ARS 100.000 por token.',
     href: '/signup',
   },
@@ -31,7 +31,7 @@ const journey = [
 const highlights = [
   'Tasa anual visible antes de comprar',
   'Cheque cards con detalle alcanzable',
-  'Stats para inversor: retorno actual, abierto y concentracion',
+  'Stats para inversor: retorno actual, abierto y concentración',
   'Narrativa de riesgo con IA sobre datos BCRA',
 ] as const;
 
