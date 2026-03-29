@@ -25,7 +25,7 @@ export function DashboardHero({ role, title, description, displayName, companyNa
     <div className={`rounded-[2rem] border p-8 shadow-2xl shadow-black/20 ${styles.wrapper}`}>
       <p className={`text-sm uppercase tracking-[0.3em] ${styles.text}`}>{role} dashboard</p>
       <h2 className="mt-4 text-4xl font-semibold text-white">{title}</h2>
-      <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">{description}</p>
+      <p className="mt-4 w-full text-lg leading-8 text-slate-300 lg:max-w-[90%]">{description}</p>
       <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-200">
         {displayName ? <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">{displayName}</span> : null}
         {companyName ? <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">{companyName}</span> : null}

@@ -1,3 +1,5 @@
+import { formatDateTimeCompact } from '@/lib/dates/format';
+
 type TransactionHistoryItem = {
   id: string;
   type: string;
@@ -38,7 +40,7 @@ export function TransactionHistoryTable({ items, emptyMessage }: TransactionHist
               <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{item.type}</p>
               <p className="mt-1 text-base font-semibold text-white">{item.description}</p>
             </div>
-            <p className="text-sm text-slate-300">{item.at}</p>
+            <p className="text-sm text-slate-300">{formatDateTimeCompact(item.at)}</p>
             <p className="text-right text-base font-semibold text-white">{formatCurrency(item.amount)}</p>
           </article>
         ))}

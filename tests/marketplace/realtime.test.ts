@@ -13,9 +13,15 @@ const baseInvoice: MarketplaceInvoiceCard = {
   netAmount: 1275000,
   riskTier: 'A',
   discountRate: 0.145,
+  investorRate: 0.12,
   totalFractions: 8,
   fundedFractions: 2,
   availableFractions: 6,
+  payerCuit: '30700111222',
+  daysToMaturity: 92,
+  perFractionNetAmount: 159375,
+  perFractionExpectedReturn: 187500,
+  progressPercentage: 25,
   dueDate: '2026-06-28',
 };
 
@@ -86,7 +92,7 @@ describe('marketplace realtime controller', () => {
         invoiceHandler = onInvoiceUpdate;
         return () => undefined;
       },
-      setIntervalFn: vi.fn(() => 1),
+      setIntervalFn: vi.fn(() => 1 as unknown as ReturnType<typeof setInterval>),
       clearIntervalFn: vi.fn(),
     });
 
@@ -136,12 +142,12 @@ describe('marketplace realtime controller', () => {
       },
       setIntervalFn: vi.fn((callback) => {
         pollCallback = callback;
-        return 7;
+        return 7 as unknown as ReturnType<typeof setInterval>;
       }),
       clearIntervalFn,
       setTimeoutFn: vi.fn((callback) => {
         timeoutCallback = callback;
-        return 9;
+        return 9 as unknown as ReturnType<typeof setTimeout>;
       }),
       clearTimeoutFn: vi.fn(),
     });

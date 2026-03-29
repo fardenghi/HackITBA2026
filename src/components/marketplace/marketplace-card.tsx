@@ -12,8 +12,6 @@ type MarketplaceCardProps = {
 };
 
 export function MarketplaceCard({ invoice, mode }: MarketplaceCardProps) {
-  const expectedYield = invoice.perFractionNetAmount > 0 ? (invoice.perFractionExpectedReturn / invoice.perFractionNetAmount) * 100 : 0;
-
   return (
     <article className="rounded-[2rem] border border-white/10 bg-slate-950/40 p-6 shadow-2xl shadow-black/20">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -32,13 +30,13 @@ export function MarketplaceCard({ invoice, mode }: MarketplaceCardProps) {
         <p className="text-sm uppercase tracking-[0.25em] text-slate-500">Ficha del cheque</p>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           <Highlight label="Tasa anual" value={`${(invoice.discountRate * 100).toFixed(2)}%`} />
-          <Highlight label="Yield por token" value={`${expectedYield.toFixed(2)}%`} />
+          <Highlight label="Tasa inversor" value={`${(invoice.investorRate * 100).toFixed(2)}%`} />
         </div>
         <div className="mt-4">
           <InvoiceFactsList
             availableFractions={invoice.availableFractions}
             daysToMaturity={invoice.daysToMaturity}
-            discountRate={invoice.discountRate}
+            investorRate={invoice.investorRate}
             payerCuit={invoice.payerCuit}
             perFractionExpectedReturn={invoice.perFractionExpectedReturn}
             perFractionNetAmount={invoice.perFractionNetAmount}

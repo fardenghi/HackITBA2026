@@ -23,7 +23,7 @@ export default async function CedenteDashboardPage() {
           <div className="rounded-[1.75rem] border border-white/10 bg-black/20 p-6">
             <p className="text-xs uppercase tracking-[0.24em] text-emerald-200">Siguiente acción</p>
             <h3 className="mt-3 text-2xl font-semibold text-white">Cargá un cheque nuevo y dejá que Karaí haga el resto.</h3>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-slate-300">
+            <p className="mt-3 w-full text-sm leading-7 text-slate-300 lg:max-w-[92%]">
               Consultamos al BCRA, analizamos el índice de riesgo usando un modelo de IA, calculamos la tasa apropiada y tokenizamos automáticamente.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
@@ -91,7 +91,7 @@ export default async function CedenteDashboardPage() {
       </section>
 
       <section className="space-y-4">
-        <div>
+        <div className="w-full rounded-[1.5rem] border border-white/10 bg-black/10 p-5">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Ledger reciente</p>
           <h2 className="mt-2 text-2xl font-semibold text-white">Compras y desembolsos visibles para la PyME</h2>
         </div>

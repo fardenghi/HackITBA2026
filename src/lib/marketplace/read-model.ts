@@ -1,5 +1,6 @@
 import { calculatePerFractionExpectedReturn } from '@/lib/marketplace/calculations';
 import type { InvoiceFundingSnapshot, MarketplaceInvoiceCard } from '@/lib/marketplace/types';
+import { calculateInvestorRate } from '@/lib/risk/pricing';
 
 export type MarketplaceInvoiceRow = {
   id: string;
@@ -56,6 +57,7 @@ export function toMarketplaceInvoiceCard(row: MarketplaceInvoiceRow): Marketplac
   const fundedFractions = row.funded_fractions ?? 0;
   const netAmount = toNumber(row.net_amount);
   const amount = toNumber(row.amount);
+  const discountRate = toNumber(row.discount_rate);
   const perFractionNetAmount = totalFractions > 0 ? roundToCents(netAmount / totalFractions) : 0;
   const progressPercentage = totalFractions > 0 ? roundToCents((fundedFractions / totalFractions) * 100) : 0;
 
@@ -67,7 +69,8 @@ export function toMarketplaceInvoiceCard(row: MarketplaceInvoiceRow): Marketplac
     amount,
     netAmount,
     riskTier: row.risk_tier as MarketplaceInvoiceCard['riskTier'],
-    discountRate: toNumber(row.discount_rate),
+    discountRate,
+    investorRate: calculateInvestorRate(discountRate),
     totalFractions,
     fundedFractions,
     availableFractions: Math.max(totalFractions - fundedFractions, 0),

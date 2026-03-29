@@ -6,6 +6,7 @@ import { InvoiceFactsList } from '@/components/marketplace/invoice-facts-list';
 import { SettlementSummary } from '@/components/invoices/settlement-summary';
 import { PurchaseFractionsForm } from '@/components/marketplace/purchase-fractions-form';
 import { RiskBadge } from '@/components/invoices/risk-badge';
+import { formatDateTimeCompact } from '@/lib/dates/format';
 import { getInvoiceFundingSnapshot } from '@/lib/marketplace/queries';
 import { getInvestorInvoiceSettlementView } from '@/lib/settlement/queries';
 
@@ -24,7 +25,7 @@ export default async function InvestorInvoiceDetailPage({ params }: { params: Pr
   const amount = settlementView?.invoice.amount ?? snapshot?.amount ?? 0;
   const netAmount = settlementView?.invoice.netAmount ?? snapshot?.netAmount ?? 0;
   const dueDate = settlementView?.invoice.dueDate ?? snapshot?.dueDate ?? '';
-  const discountRate = snapshot?.discountRate ?? 0;
+  const investorRate = snapshot?.investorRate ?? 0;
   const riskTier = snapshot?.riskTier ?? 'A';
   const payerCuit = snapshot?.payerCuit ?? '';
   const daysToMaturity = snapshot?.daysToMaturity ?? 0;
@@ -51,7 +52,7 @@ export default async function InvestorInvoiceDetailPage({ params }: { params: Pr
         <div className="mt-6 grid gap-4 md:grid-cols-4">
           <Metric label="Monto total" value={`ARS ${amount.toLocaleString('es-AR')}`} />
           <Metric label="Monto neto" value={`ARS ${netAmount.toLocaleString('es-AR')}`} />
-          <Metric label="Tasa descuento" value={`${(discountRate * 100).toFixed(1)}%`} />
+          <Metric label="Tasa inversor" value={`${(investorRate * 100).toFixed(1)}%`} />
           <Metric label="Vencimiento" value={dueDate} />
         </div>
       </div>
@@ -66,7 +67,7 @@ export default async function InvestorInvoiceDetailPage({ params }: { params: Pr
             <InvoiceFactsList
               availableFractions={availableFractions}
               daysToMaturity={daysToMaturity}
-              discountRate={discountRate}
+              investorRate={investorRate}
               payerCuit={payerCuit}
               perFractionExpectedReturn={perFractionExpectedReturn}
               perFractionNetAmount={perFractionNetAmount}
@@ -103,7 +104,7 @@ export default async function InvestorInvoiceDetailPage({ params }: { params: Pr
                   <div>
                     <p className="text-sm uppercase tracking-[0.2em] text-slate-500">{transaction.type}</p>
                     <p className="mt-1 text-lg font-semibold text-white">{transaction.description}</p>
-                    <p className="mt-1 text-sm text-slate-400">{transaction.at}</p>
+                    <p className="mt-1 text-sm text-slate-400">{formatDateTimeCompact(transaction.at)}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{transaction.direction === 'in' ? 'Ingreso' : 'Egreso'}</p>

@@ -25,7 +25,7 @@ describe('deterministic risk engine', () => {
 
     expect(result).toMatchObject({
       tier: 'B',
-      discountRate: 0.205,
+      discountRate: 0.121,
       fallbackUsed: false,
     });
     expect(result.signals).toEqual(

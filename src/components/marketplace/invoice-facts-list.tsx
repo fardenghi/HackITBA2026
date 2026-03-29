@@ -1,7 +1,7 @@
 type InvoiceFactsListProps = {
   payerCuit: string;
   daysToMaturity: number;
-  discountRate: number;
+  investorRate: number;
   availableFractions: number;
   perFractionNetAmount: number;
   perFractionExpectedReturn: number;
@@ -11,7 +11,7 @@ type InvoiceFactsListProps = {
 export function InvoiceFactsList({
   payerCuit,
   daysToMaturity,
-  discountRate,
+  investorRate,
   availableFractions,
   perFractionNetAmount,
   perFractionExpectedReturn,
@@ -21,7 +21,7 @@ export function InvoiceFactsList({
     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
       <Fact label="CUIT" value={payerCuit} />
       <Fact label="Días al vencimiento" value={`${daysToMaturity}`} />
-      <Fact label="Tasa anual" value={`${(discountRate * 100).toFixed(1)}%`} />
+      <Fact label="Tasa inversor" value={`${(investorRate * 100).toFixed(1)}%`} />
       <Fact label="Precio por token" value={`ARS ${Math.round(perFractionNetAmount).toLocaleString('es-AR')}`} />
       <Fact label="Retorno por fracción" value={`ARS ${Math.round(perFractionExpectedReturn).toLocaleString('es-AR')}`} />
       <Fact label="Disponibles" value={`${availableFractions} tokens`} />

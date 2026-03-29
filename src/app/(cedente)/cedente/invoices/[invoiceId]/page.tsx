@@ -6,6 +6,7 @@ import { InvoiceStatusStepper } from '@/components/invoices/invoice-status-stepp
 import { SettlementActionForm } from '@/components/invoices/settlement-action-form';
 import { SettlementSummary } from '@/components/invoices/settlement-summary';
 import { TokenizationSummary } from '@/components/invoices/tokenization-summary';
+import { formatDateTimeCompact } from '@/lib/dates/format';
 import { getCedenteInvoiceSettlementView } from '@/lib/settlement/queries';
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ invoiceId: string }> }) {
@@ -82,7 +83,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
                 <div>
                   <p className="text-sm uppercase tracking-[0.2em] text-slate-500">{transaction.type}</p>
                   <p className="mt-1 text-lg font-semibold text-white">{transaction.description}</p>
-                  <p className="mt-1 text-sm text-slate-400">{transaction.at}</p>
+                  <p className="mt-1 text-sm text-slate-400">{formatDateTimeCompact(transaction.at)}</p>
                 </div>
                 <p className="text-right text-lg font-semibold text-white">{formatCurrency(transaction.amount)}</p>
               </article>

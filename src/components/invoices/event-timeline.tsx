@@ -1,4 +1,5 @@
 import type { TimelineItem } from '@/lib/settlement/timeline';
+import { formatDateTimeCompact } from '@/lib/dates/format';
 
 type EventTimelineProps = {
   items: TimelineItem[];
@@ -16,13 +17,6 @@ function formatAmount(amount?: number) {
   }).format(amount);
 }
 
-function formatTimestamp(value: string) {
-  return new Intl.DateTimeFormat('es-AR', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value));
-}
-
 export function EventTimeline({ items }: EventTimelineProps) {
   if (items.length === 0) {
     return (
@@ -34,8 +28,8 @@ export function EventTimeline({ items }: EventTimelineProps) {
 
   return (
     <section className="rounded-3xl border border-white/10 bg-slate-950/50 p-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Timeline auditable</p>
           <h2 className="mt-2 text-2xl font-semibold text-white">Lifecycle + movimientos financieros</h2>
         </div>
@@ -59,7 +53,7 @@ export function EventTimeline({ items }: EventTimelineProps) {
               <div>
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-500">{isFinancial ? 'Financiero' : 'Estado'}</p>
                 <p className="mt-1 text-lg font-semibold text-white">{item.label}</p>
-                <p className="mt-1 text-sm text-slate-400">{formatTimestamp(item.at)}</p>
+                <p className="mt-1 text-sm text-slate-400">{formatDateTimeCompact(item.at)}</p>
               </div>
               {amount ? <p className="text-right text-base font-semibold text-white">{amount}</p> : <div />}
             </li>

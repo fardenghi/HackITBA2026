@@ -3,6 +3,14 @@ import { calculateDiscountRate, type RiskTier } from '@/lib/risk/pricing';
 
 type RiskSource = 'cache' | 'live' | 'stale-cache' | 'fallback';
 
+const fallbackTierPool: RiskTier[] = ['B', 'B', 'C', 'C', 'C', 'D'];
+
+const fallbackSignalVariants = [
+  'Escenario proxy conservador por ausencia de datos BCRA en vivo',
+  'Escenario proxy balanceado por ausencia de datos BCRA en vivo',
+  'Escenario proxy defensivo por ausencia de datos BCRA en vivo',
+] as const;
+
 export type DeterministicRiskResult = {
   tier: RiskTier;
   discountRate: number;
@@ -11,9 +19,25 @@ export type DeterministicRiskResult = {
   daysToMaturity: number;
 };
 
-function resolveTier(snapshot: NormalizedBcraSnapshot, source: RiskSource): RiskTier {
+function normalizeRandomValue(randomValue: number) {
+  return Math.min(0.999999, Math.max(0, randomValue));
+}
+
+function pickFallbackTier(randomValue: number): RiskTier {
+  const normalized = normalizeRandomValue(randomValue);
+  const index = Math.floor(normalized * fallbackTierPool.length);
+  return fallbackTierPool[index] ?? 'C';
+}
+
+function pickFallbackSignal(randomValue: number) {
+  const normalized = normalizeRandomValue(randomValue);
+  const index = Math.floor(normalized * fallbackSignalVariants.length);
+  return fallbackSignalVariants[index] ?? fallbackSignalVariants[1];
+}
+
+function resolveTier(snapshot: NormalizedBcraSnapshot, source: RiskSource, fallbackTier: RiskTier): RiskTier {
   if (source === 'fallback' || snapshot.situacion === 0) {
-    return 'C';
+    return fallbackTier;
   }
 
   if (snapshot.situacion <= 1) return 'A';
@@ -28,11 +52,11 @@ function daysBetween(asOfDate: string, dueDate: string) {
   return Math.max(0, Math.ceil((end - start) / 86_400_000));
 }
 
-function buildSignals(snapshot: NormalizedBcraSnapshot, source: RiskSource) {
+function buildSignals(snapshot: NormalizedBcraSnapshot, source: RiskSource, fallbackSignal: string) {
   const signals: string[] = [];
 
   if (source === 'fallback') {
-    signals.push('Fallback determinístico por ausencia de datos BCRA en vivo');
+    signals.push(fallbackSignal);
   }
 
   if (snapshot.situacion > 0) {
@@ -87,9 +111,13 @@ export function scoreRiskDeterministically(input: {
   source: RiskSource;
   asOfDate: string;
   dueDate: string;
+  randomFn?: () => number;
 }): DeterministicRiskResult {
-  const tier = resolveTier(input.snapshot, input.source);
-  const signals = buildSignals(input.snapshot, input.source);
+  const fallbackRandomValue = input.randomFn?.() ?? Math.random();
+  const fallbackTier = pickFallbackTier(fallbackRandomValue);
+  const fallbackSignal = pickFallbackSignal(fallbackRandomValue);
+  const tier = resolveTier(input.snapshot, input.source, fallbackTier);
+  const signals = buildSignals(input.snapshot, input.source, fallbackSignal);
   const daysToMaturity = daysBetween(input.asOfDate, input.dueDate);
   const adverseSignals = countMaterialAdverseSignals(input.snapshot);
 

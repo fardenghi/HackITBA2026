@@ -9,6 +9,7 @@ export type MarketplaceInvoiceCard = {
   netAmount: number;
   riskTier: RiskTier;
   discountRate: number;
+  investorRate: number;
   totalFractions: number;
   fundedFractions: number;
   availableFractions: number;
