@@ -9,8 +9,8 @@ export function DollarSpin() {
       <div
         className="select-none"
         style={{
-          width: 192,
-          height: 192,
+          width: 260,
+          height: 260,
           position: 'relative',
           animation: 'dollar-rotate 8s linear infinite',
           transformStyle: 'preserve-3d',
@@ -21,8 +21,8 @@ export function DollarSpin() {
           <svg
             key={i}
             aria-hidden={i > 0}
-            width={192}
-            height={192}
+            width={260}
+            height={260}
             viewBox="200 127 196 193"
             xmlns="http://www.w3.org/2000/svg"
             style={{
