@@ -32,9 +32,9 @@ export function InvoiceFactsList({
 
 function Fact({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+    <div className="min-w-0 rounded-2xl border border-white/10 bg-black/20 p-4">
       <p className="text-sm text-slate-400">{label}</p>
-      <p className="mt-2 text-lg font-semibold text-white">{value}</p>
+      <p className="mt-2 break-all text-lg font-semibold text-white">{value}</p>
     </div>
   );
 }
